@@ -8,19 +8,21 @@ Created on Wed Mar  6 21:36:01 2019
 from ParameterReader import cessna
 import numpy as np
 import scipy.linalg as slin
-from scipy import signal
+import matplotlib.pyplot as plt
+import control.matlab as control
 
 #rewrite linear system into SS: x_bar_dot = AX + Bu
 def SSmaker(a, b, c):
+    
     A = np.dot(slin.inv(a), b)
-    B = np.dot(slin.inv(a), c)
+    B = np.dot(slin.inv(a), c)  
     C = np.array([[1, 0, 0, 0],
              [0, 1, 0, 0],
              [0, 0, 1, 0],
              [0, 0, 0, 1]])
     D = np.zeros(np.shape(c))
     
-    return signal.StateSpace(A,B,C,D)
+    return control.ss(A,B,C,D)
 
 ## SYMMETRIC MOTION
     #C1 x_bar_dot + C2 x_bar + C3 u_bar = 0
@@ -63,5 +65,11 @@ C3a = np.array([[-cessna.StabDeriv.CYda, -cessna.StabDeriv.CYdr], [0,0],
 ## State-Space Models:
 sys_symm = SSmaker(C1s,C2s,C3s)
 sys_asymm = SSmaker(C1a, C2a, C3a)
-    
+
+y,t = control.step(sys_symm)
+#
+plt.plot(t,y)
+
+
+
 
