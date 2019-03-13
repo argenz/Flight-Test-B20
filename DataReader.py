@@ -65,7 +65,7 @@ def get_Data1():
             f_used = float(sheet.cell_value(i, 8))*0.000125998  #lbs/hr --> kg/s
             F_used.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 9))+273.15
+            temp = float(sheet.cell_value(i, 9))+273.15    #°C --> K
             TAT.append(temp)
     return mppl, mfuel, time, hp, IAS, alpha, F_fl, F_fr, F_used, TAT
             
@@ -73,10 +73,12 @@ def get_Data1():
 def get_Data2():
     
     mppl = 0
+    mpplist = []
     for i in range(16):
         if i>6:
             mppl = mppl + sheet.cell_value(i,7)
-    
+            mpplist.append(sheet.cell_value(i,7))
+            
     mfuel = sheet.cell_value(17, 3)*0.453592  #lbs--->kg
     
     time = []         #time elapsed  @ each measurement [s]
@@ -124,7 +126,7 @@ def get_Data2():
             f_used = float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
             F_used.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 12))+273.15  #C --> K
+            temp = float(sheet.cell_value(i, 12))+273.15   #°C-->K
             TAT.append(temp)
     
     #SHIFT IN CENTER OF GRAVITY
@@ -173,7 +175,7 @@ def get_Data2():
             f_used= float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
             F_used_cg.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 12))
+            temp = float(sheet.cell_value(i, 12))+273.15   #°C-->K
             TAT_cg.append(temp)    
     
     #EIGENMOTIONS ??
@@ -182,33 +184,34 @@ def get_Data2():
     #
     #
     
-    return mppl, mfuel, time, hp, IAS, alpha, delta_e, delta_tr, F_e, F_fl, F_fr, F_used, TAT, t_cg, hp_cg, IAS_cg, alpha_cg, delta_e_cg, delta_tr_cg, F_e_cg, F_fl_cg, F_fr_cg, F_used_cg, TAT_cg
+    return mppl, mpplist, mfuel, time, hp, IAS, alpha, delta_e, delta_tr, F_e, F_fl, F_fr, F_used, TAT, t_cg, hp_cg, IAS_cg, alpha_cg, delta_e_cg, delta_tr_cg, F_e_cg, F_fl_cg, F_fr_cg, F_used_cg, TAT_cg
  
 #COPY AND PASE THIS TO YOUR .PY TO HAVE ALL VARIABLES READY TO USE
 
-#mppl = get_Data()[0]
-#mfuel = get_Data()[1]
-#time  = get_Data()[2]
-#hp = get_Data()[3]
-#IAS = get_Data()[4]
-#alpha = get_Data()[5]
-#delta_e = get_Data()[6]
-#delta_tr  = get_Data()[7]
-#F_e = get_Data()[8]
-#F_fl = get_Data()[9]
-#F_fr = get_Data()[10]
-#F_used = get_Data()[11]
-#TAT = get_Data()[12]
-#t_cg = get_Data()[13]
-#hp_cg = get_Data()[14]
-#IAS_cg = get_Data()[15]
-#alpha_cg = get_Data()[16]
-#delta_e_cg = get_Data()[17]
-#delta_tr_cg = get_Data()[18]
-#F_e_cg = get_Data()[19]
-#F_fl_cg = get_Data()[20]
-#F_fr_cg = get_Data()[21]
-#F_used_cg = get_Data()[22]
-#TAT_cg = get_Data()[23]
+#mppl = get_Data2()[0]
+#mpplist = get_Data2()[1]    
+#mfuel = get_Data2()[2]
+#time  = get_Data2()[3]
+#hp = get_Data2()[4]
+#IAS = get_Data2()[4]
+#alpha = get_Data2()[5]
+#delta_e = get_Data2()[6]
+#delta_tr  = get_Data2()[7]
+#F_e = get_Data2()[8]
+#F_fl = get_Data2()[9]
+#F_fr = get_Data2()[10]
+#F_used = get_Data2()[11]
+#TAT = get_Data2()[12]
+#t_cg = get_Data2()[13]
+#hp_cg = get_Data2()[14]
+#IAS_cg = get_Data2()[15]
+#alpha_cg = get_Data2()[16]
+#delta_e_cg = get_Data2()[17]
+#delta_tr_cg = get_Data2()[18]
+#F_e_cg = get_Data2()[19]
+#F_fl_cg = get_Data2()[20]
+#F_fr_cg = get_Data2()[21]
+#F_used_cg = get_Data2()[22]
+#TAT_cg = get_Data2()[23]
 #
 #print alpha 
