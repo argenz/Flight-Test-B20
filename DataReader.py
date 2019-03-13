@@ -74,10 +74,12 @@ def get_Data2():
     
     mppl = 0
     mpplist = []
+    pplname = []
     for i in range(16):
         if i>6:
             mppl = mppl + sheet.cell_value(i,7)
             mpplist.append(sheet.cell_value(i,7))
+            pplname.append(sheet.cell_value(i,0))
             
     mfuel = sheet.cell_value(17, 3)*0.453592  #lbs--->kg
     
@@ -184,7 +186,7 @@ def get_Data2():
     #
     #
     
-    return mppl, mpplist, mfuel, time, hp, IAS, alpha, delta_e, delta_tr, F_e, F_fl, F_fr, F_used, TAT, t_cg, hp_cg, IAS_cg, alpha_cg, delta_e_cg, delta_tr_cg, F_e_cg, F_fl_cg, F_fr_cg, F_used_cg, TAT_cg
+    return mppl, mpplist, pplname, mfuel, time, hp, IAS, alpha, delta_e, delta_tr, F_e, F_fl, F_fr, F_used, TAT, t_cg, hp_cg, IAS_cg, alpha_cg, delta_e_cg, delta_tr_cg, F_e_cg, F_fl_cg, F_fr_cg, F_used_cg, TAT_cg
  
 #COPY AND PASE THIS TO YOUR .PY TO HAVE ALL VARIABLES READY TO USE
 
