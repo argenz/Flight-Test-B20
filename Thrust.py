@@ -18,25 +18,25 @@ IAS = get_Data1()[4]
 F_fl = get_Data1()[6]
 F_fr = get_Data1()[7]
 TAT = get_Data1()[9]
-
-rho = get_ISA_rho(h)
-
-
-c = []
-for i in range(len(TAT)):
-    x = (k*R*TAT[i])**(1/2)
-    c.append(x)
+rho = ISA_rho(h)
 
 
-Mach = []
-for i in range(len(TAT)):
-    m = IAS[i]*sqrt(rho0/rho[i])/c[i]
-    Mach.append(m)
-    
+
 Ts = []
 for i in range(len(TAT)):
     x = TAT[i]/(1-((k-1)/2)*Mach[i]**2)
     Ts.append(x)
+
+
+c = []
+for i in range(len(TAT)):
+    x = sqrt(k*R*Ts[i])
+    c.append(x)
+
+Mach = []
+for i in range(len(TAT)):
+    m = IAS[i]*sqrt(rho0/rho[i])/c[i] 
+    Mach.append(m)
     
 Tdif = []
 for i in range(len(TAT)):
@@ -45,8 +45,8 @@ for i in range(len(TAT)):
     Tdif.append(dif)
 
 data_thrust = []    
-for i in range(len(pres)):
-    x = [ pres[i], Mach[i], Tdif[i], flow_left[i], flow_right[i]]
+for i in range(len(TAT)):
+    x = [ h[i], Mach[i], Tdif[i], F_fl[i], F_fr[i]]
     data_thrust.append(x)
 
 datfile = open("matlab.dat","w+")

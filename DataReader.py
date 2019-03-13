@@ -65,7 +65,7 @@ def get_Data1():
             f_used = float(sheet.cell_value(i, 8))*0.000125998  #lbs/hr --> kg/s
             F_used.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 9))
+            temp = float(sheet.cell_value(i, 9))+273.15
             TAT.append(temp)
     return mppl, mfuel, time, hp, IAS, alpha, F_fl, F_fr, F_used, TAT
             
@@ -124,7 +124,7 @@ def get_Data2():
             f_used = float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
             F_used.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 12))
+            temp = float(sheet.cell_value(i, 12))+273.15  #C --> K
             TAT.append(temp)
     
     #SHIFT IN CENTER OF GRAVITY
