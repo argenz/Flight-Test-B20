@@ -9,27 +9,33 @@ from AerodynamicCoeff import AerodynamicCoeffFunc
 from DataReader import get_Data1
 import numpy as np
 
-def delta_e(Cmde, Tcs, Tc, CmTc, delta_e_meas):
+def delta_e(aircraft, delta_e_meas):
+      
+    #To minimize this error, we choose its value at the thrust "normally"
+    #required to sustain horizontal flight at the measurement conditions.
     
-    dDelta_e = delta_e_meas - 1/Cmde * (Tcs - Tc)
+    def GetThrustCoeff(V, ISAmodel, thrustL, thrustR, aircraft):
+        Tavg = []
+        Tc = []
+        for i, thrust in enumerate(thrustL):
+            Tavgi = np.average((thrust, thrustR[i]))
+            Tci = Tavgi/(0.5*ISAmodel.rho0*V[i]**2*cessna.Geometry.S)
+            Tavg.append(Tavgi)
+            Tc.append(Tci)
+        return Tc
     
+    def GetStandardThrustCoeff():
+        ## TODO: add func calculating Tsc with mdot_sc
+        
+        return False
+    
+    Tcs = GetStandardThrustCoeff()
+    VAS = AerodynamicCoeffFunc(get_Data1(), cessna, ISAmodule, Tl, Tr)[4]
+    Tc = GetThrustCoeff(VAS, ISAmodule, Tl, Tr, cessna)
+    CmTc =  -0.0064
+    dDelta_e = delta_e_meas - 1/aircraft.LongStab.Cmde * CmTc * (Tcs - Tc)    
+    
+#T_c = ThrustCoeff(VAS, ISAmodule, Tl, Tr, cessna)
+
     return dDelta_e
-
-#To minimize this error, we choose its value at the thrust "normally"
-#required to sustain horizontal flight at the measurement conditions.
-
-def ThrustCoeff(V, ISAmodel, thrustL, thrustR, aircraft):
-    T_avg = []
-    T_c = []
-    for i, thrust in enumerate(thrustL):
-        T_avgi = np.average((thrust, thrustR[i]))
-        T_ci = T_avgi/(0.5*ISAmodel.rho0*V[i]**2*cessna.Geometry.S)
-        T_avg.append(T_avgi)
-        T_c.append(T_ci)
-    return T_c
-
-VAS = AerodynamicCoeffFunc(get_Data1(), cessna, ISAmodule, Tl, Tr)[4]
-T_c = ThrustCoeff(VAS, ISAmodule, Tl, Tr, cessna)
-
-
     
