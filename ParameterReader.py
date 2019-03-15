@@ -141,6 +141,9 @@ cessna.StabDeriv = (cessnaStabDeriv)
 
 
 class ISAProperties(object):
+    # Properties:
+    # - values at h = 0
+    # func returning values: rho, T @ given h
     def __init__(self, rho0, lmbda, temp0, R, G):
         self.rho0 = rho0
         self.lmbda = lmbda
