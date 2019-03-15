@@ -74,5 +74,5 @@ def cg_time(UTC_sec, cg_config):
     
     total_mass = 9165 + fuel_mass(UTC_sec) + sum(mppl_lbs)
     
-    return total_mom/total_mass
+    return total_mom/total_mass #in inches
 
