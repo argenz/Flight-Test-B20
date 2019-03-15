@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # -*- coding: utf-8 -*-
 """
 Created on Wed Mar 13 12:02:09 2019
@@ -12,10 +12,23 @@ pplname = get_Data2()[2]
 pplname.insert(0,"nose")
 pplname.insert(1,"aft cabin1")
 pplname.insert(2,"aft cabin2")
-print(pplname)
+
 mpplist = get_Data2()[1]
+mpplist.insert(0,100)
+mpplist.insert(1,200)
+mpplist.insert(2,200)
+
 cg_list = [74,321,338,131,131,170,214,214,251,251,288,288]
-=======
+
+moment = 0
+total_mass = 0
+for i in range(len(mpplist)):
+    moment += mpplist[i]*cg_list[i] #cg*mass
+    total_mass += mpplist[i]
+    
+cg = moment/total_mass  #cg location measured from the nose of the plane
+
+
 #,-*-,coding:,utf-8,-*-
 """
 Created on Wed Mar 13,11:39:32 2019
@@ -40,4 +53,4 @@ def fuel_moment(fuel_mass):
     
     return moment
     
->>>>>>> 45d6ba63311c9911ad7b945afd619ec02ae8ba9f
+
