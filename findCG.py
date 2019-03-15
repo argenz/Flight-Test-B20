@@ -10,22 +10,28 @@ from DataReader import *
 from data_processing import *
 
 pplname = get_Data2()[2]
-pplname.insert(0,"nose")
-pplname.insert(1,"aft cabin1")
-pplname.insert(2,"aft cabin2")
+#pplname.insert(0,"nose")
+#pplname.insert(1,"aft cabin1")
+#pplname.insert(2,"aft cabin2")
 
-mpplist = get_Data2()[1]
-mpplist.insert(0,100)
-mpplist.insert(1,200)
-mpplist.insert(2,200)
+mpplist_kg = get_Data2()[1]
+#mpplist_kg.insert(0,100)
+#mpplist_kg.insert(1,200)
+#mpplist_kg.insert(2,200)
 
-cg_list = [74,321,338,131,131,170,214,214,251,251,288,288]
+mppl_lbs = []
+for i in mpplist_kg:
+    mppl_lbs.append(i*2.20462)
+    
+
+
+cg_list = [131,131,170,214,214,251,251,288,288]
 
 moment = 0
 total_mass = 0
-for i in range(len(mpplist)):
-    moment += mpplist[i]*cg_list[i] #cg*mass
-    total_mass += mpplist[i]
+for i in range(len(mppl_lbs)):
+    moment += mppl_lbs[i]*cg_list[i] #pounds*inches
+    total_mass += mppl_lbs[i]
     
 cg = moment/total_mass  #cg location measured from the nose of the plane
 
