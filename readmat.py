@@ -19,7 +19,7 @@ for i in range(len(data[0][0])):
     #fd.append(title)
     fd.append(numbers)
     
-print(data)   
+  
     
     
 #every variable list with their data
