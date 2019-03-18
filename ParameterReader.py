@@ -8,6 +8,10 @@ Created on Mon Mar  4 14:46:02 2019
 from scipy import signal
 import numpy as np
 from Cit_par import *
+
+Tl = [1879.17, 1930.19, 1972.48, 2016.4, 1844.79, 1838.59, 1804.57]	
+Tr = [2052.36, 2106.61, 2144.6, 2197.46, 2014.83, 2006.7, 1961.74]
+
 class Aircraft(object):
     
     def __init__(self):
@@ -117,7 +121,7 @@ class StabDeriv(object):
         self.Cnr    =  Cnr
         self.Cnda   =  Cnda
         self.Cndr   =  Cndr       
-
+        
 cessna = Aircraft()
 cessnaStatFlightCond = StatFlightCond(hp0, V0, alpha0, th0)
 cessnaLongStab = LongStab(Cma, Cmde)
@@ -134,6 +138,53 @@ cessna.AeroProp = (cessnaAeroProp)
 cessna.Geometry = (cessnaGeometry)
 cessna.Inertia = (cessnaInertia)
 cessna.StabDeriv = (cessnaStabDeriv)
+
+
+class ISAProperties(object):
+    # Properties:
+    # - values at h = 0
+    # func returning values: rho, T @ given h
+    def __init__(self, rho0, lmbda, temp0, R, G):
+        self.rho0 = rho0
+        self.lmbda = lmbda
+        self.temp0 = temp0
+        self.R = R
+        self.g = G
+    def ISA_rho(self, h):
+
+    
+        HBase = [0, 11000, 20000, 32000, 47000, 51000, 71000, 84852]
+        HTop = HBase[1:]+[100000]
+        T0 = [288.15, 216.5, 216.5, 228.5, 270.5, 270.5, 214.5 ,186.8 ,-86.2+273.15]
+        rho0 = [1.225, 0.36392, 0.08803, 0.01322, 0.00142, 0.00086, 0.00006,0]
+    #    P0 = [101325, 22632, 5474.9, 868.02, 110.91, 66.939, 3.9564, 0.3734]
+        a = [-0.0065, 0, 1.0, 0.0028, 0, 0.0028, -0.002, 0]
+        
+        i = 0 
+        
+        while h>HTop[i]:
+            i = i+1
+            
+#    print "layer ", i
+        
+        
+        if i==1 or i==4 or i==7:
+            T = T0[i]
+    #        P = P0[i]*(np.e**(-9.80665 / (287*T)*(h - HBase[i])))
+            rho = rho0[i]*(np.e**(-9.80665 / (287*T)*(h - HBase[i])))
+            
+        else:
+            T = T0[i] + a[i]*h
+    #        P = P0[i]*(T/T0[i])**(-9.80665/(a[i]*287))
+            rho = rho0[i]*(T/T0[i])**(-9.80665/(a[i]*287)-1)
+            
+#    print"Density =", rho,"kg/m^3    - OR -    ", rho*0.062427961,"lb/cu ft"
+#    print"Pressure =", float(P),"Pa    - OR -    ", float(P)*0.0001450777202,"psi"
+#    print"Temperature =", T,"K    - OR -    ", T-273.25, "°C"   
+
+        return rho, T
+
+ISAmodule = ISAProperties(rho0, lmbda, Temp0, R, g)
 
 
 
