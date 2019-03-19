@@ -4,18 +4,26 @@
 
 # Stationary flight condition
 import numpy as np
+from AerodynamicCoeff import *
+from DataReader import *
+
 hp0    =     123         # pressure altitude in the stationary flight condition [m]
 V0     =     234         # true airspeed in the stationary flight condition [m/sec]
-alpha0 =     57         # angle of attack in the stationary flight condition [rad]
-th0    =     10         # pitch angle in the stationary flight condition [rad]
+alpha0 =     57          # angle of attack in the stationary flight condition [rad]
+th0    =     10          # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m      =     1000        # mass [kg]
+mppl = get_Data1()[0]                    #mass of people
+oew = 3504                               #kg 
+mfuel = get_Data1()[1]  
+
+m =mppl+eow+mfuel #kg
+
 
 # aerodynamic properties
-e      =     1       # Oswald factor [ ]
-CD0    =     0.004       # Zero lift drag coefficient [ ]
-CLa    =     0.20       # Slope of CL-alpha curve [ ]
+e      =     get_oswald()           # Oswald factor [ ]
+CD0    =     get_CDO()              # Zero lift drag coefficient [ ]
+CLa    =     get_0CL_1VAS()[2]      # Slope of CL-alpha curve [ ]
 
 # Longitudinal stability
 Cma    =        -0.5     # longitudinal stabilty [ ]
