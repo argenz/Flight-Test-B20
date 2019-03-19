@@ -30,12 +30,12 @@ UTC_sec = (t1+t2)/2
 
 cg_delta = (cg_time(t2,cg_walk) - cg_time(t1,cg_normal))*0.0254 #inches --> meter
 curly_delta_e = delta_e[1]-delta_e[0] #rad
-V = IAS_cg[0]*sqrt(rho0/rho[0]) #m/s
+#V = IAS_cg[0]*sqrt(rho0/rho[0]) #m/s
 total_mass = (9165 + fuel_mass(UTC_sec) + sum(mppl_lbs))*0.45359237    #lbs --> kg
 c = 2.0569 #m
 S = 30 #m	
 
-C_n = total_mass/((1/2)*S*(V**2)*rho[0])
+C_n = total_mass/((1/2)*S*(IAS_cg[0]**2)*rho0)
 Cm_delta = -(1/curly_delta_e)*C_n*(cg_delta/c)
 print(Cm_delta)
 
