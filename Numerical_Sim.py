@@ -27,11 +27,11 @@ def SSmaker(a, b, c):
 ## SYMMETRIC MOTION
     
     #C1 x_bar_dot + C2 x_bar + C3 u_bar = 0
-C1s = np.array([[2 *cessna.Inertia.muc * cessna.Geometry.c/cessna.StatFlightCond.V0, 0, 0, 0],
-               [0, -(cessna.StabDeriv.CZa-2*cessna.Inertia.muc)*cessna.Geometry.c/cessna.StatFlightCond.V0, 0, 0],
-               [0, 0, cessna.Geometry.c/cessna.StatFlightCond.V0, 0],
-               [0, -cessna.StabDeriv.Cmadot * cessna.Geometry.c/cessna.StatFlightCond.V0, 0,
-                2* cessna.Inertia.muc* cessna.Inertia.KY2*cessna.Geometry.c/cessna.StatFlightCond.V0]])
+C1s = np.array([[-2 *cessna.Inertia.muc * cessna.Geometry.c/cessna.StatFlightCond.V0, 0, 0, 0],
+               [0, (cessna.StabDeriv.CZa-2*cessna.Inertia.muc)*cessna.Geometry.c/cessna.StatFlightCond.V0, 0, 0],
+               [0, 0, -cessna.Geometry.c/cessna.StatFlightCond.V0, 0],
+               [0, cessna.StabDeriv.Cmadot * cessna.Geometry.c/cessna.StatFlightCond.V0, 0,
+                -2* cessna.Inertia.muc* cessna.Inertia.KY2*cessna.Geometry.c/cessna.StatFlightCond.V0]])
     
 C2s = np.array([[cessna.StabDeriv.CXu, cessna.StabDeriv.CXa, cessna.StabDeriv.CZ0,
                cessna.StabDeriv.CXq],
@@ -67,7 +67,7 @@ C3a = np.array([[-cessna.StabDeriv.CYda, -cessna.StabDeriv.CYdr],
 ## State-Space Models:
     
 sys_symm = SSmaker(C1s,C2s,C3s)
-print sys_symm
+#print sys_symm
 sys_asymm = SSmaker(C1a, C2a, C3a)
 
 #y,t = control.step(sys_symm)
