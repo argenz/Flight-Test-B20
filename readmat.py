@@ -6,8 +6,7 @@ matcon = sio.loadmat('FTISxprt-20180305_124437.mat')
 data = matcon["flightdata"]
 
 
-
-    
+print(data) 
 
 #fd is list containing the matrix with the data 
     
