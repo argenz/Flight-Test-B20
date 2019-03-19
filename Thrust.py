@@ -11,19 +11,19 @@ from ParameterReader import ISAmodule
 import numpy as np
 #CL-CD series 1
 
-h1 = get_Data1()[3]
-IAS1 = get_Data1()[4]
-F_fl1 = get_Data1()[6]
-F_fr1 = get_Data1()[7]
-TAT1 = get_Data1()[9]
-
-#Elevator trim curve
-
-h2 = get_Data2()[3]
-IAS2 = get_Data2()[4]
-F_fl2 = get_Data2()[9]
-F_fr2 = get_Data2()[10]
-TAT2 = get_Data2()[12]
+#h1 = get_Data1()[3]
+#IAS1 = get_Data1()[4]
+#F_fl1 = get_Data1()[6]
+#F_fr1 = get_Data1()[7]
+#TAT1 = get_Data1()[9]
+#
+##Elevator trim curve
+#
+#h2 = get_Data2()[3]
+#IAS2 = get_Data2()[4]
+#F_fl2 = get_Data2()[9]
+#F_fr2 = get_Data2()[10]
+#TAT2 = get_Data2()[12]
 
 
 def thrust(h,IAS,F_fl,F_fr,TAT):
