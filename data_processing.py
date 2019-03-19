@@ -24,9 +24,9 @@ def utc_to_normal(utc_time):
 
 def find_index(utc_time):
     i = 0
-    if utc_time <= UTC_Seconds[0]:
+    if utc_time < UTC_Seconds[0]:
         raise ValueError('utc_time too low in find_index function')
-    if utc_time >= UTC_Seconds[-1]:
+    if utc_time > UTC_Seconds[-1]:
         raise ValueError('utc_time too high in find_index function')
     for x in [10000, 1000, 10, 1]:
         while UTC_Seconds[i] <= utc_time:
@@ -54,9 +54,9 @@ def make_list(data_list, start_time, end_time):
 #phugoid = make_list(Pressure_Altitude, UTC_Seconds[0] + 2880, UTC_Seconds[0]+3020)
 #plt.plot(phugoid[0], phugoid[1])
 #
-#plt.figure(2)
-#elevator = make_list(Deflection_of_elevator, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2908)
-#plt.plot(elevator[0], elevator[1])
+plt.figure(2)
+elevator = make_list(Deflection_of_elevator, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2908)
+plt.plot(elevator[0], elevator[1])
 #
 #plt.figure(3)
 #f1 = make_list(Fuel1, UTC_Seconds[0], UTC_Seconds[-1])
