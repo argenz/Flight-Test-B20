@@ -19,11 +19,11 @@ import numpy as np
 #
 ##Elevator trim curve
 #
-#h2 = get_Data2()[3]
-#IAS2 = get_Data2()[4]
-#F_fl2 = get_Data2()[9]
-#F_fr2 = get_Data2()[10]
-#TAT2 = get_Data2()[12]
+h2 = get_Data2()[3]
+IAS2 = get_Data2()[4]
+F_fl2 = get_Data2()[9]
+F_fr2 = get_Data2()[10]
+TAT2 = get_Data2()[12]
 
 
 def thrust(h,IAS,F_fl,F_fr,TAT):

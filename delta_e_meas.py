@@ -41,7 +41,7 @@ def delta_e(aircraft, delta_e_meas):
             Tcs.append(Tcsi)
         return Tcs
 
-    VAS = AerodynamicCoeffFunc(get_Data2(), cessna, Tl, Tr)[4]
+    VAS = AerodynamicCoeffFunc(get_Data2(), cessna, F[:,0], F[:,1])[4]
     Tc = GetThrustCoeff(ISAmodule, F[:,0], F[:,1], cessna)
     Tcs = GetStandardThrustCoeff(mdot_fs)
 
@@ -56,5 +56,5 @@ def delta_e(aircraft, delta_e_meas):
 
     return dDelta_e
 
-print (delta_e(cessna, get_Data2()[6]))
+#print (delta_e(cessna, get_Data2()[6]))
     
