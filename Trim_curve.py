@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from delta_e_meas import *
 from DataReader import *
 from ParameterReader import cessna
+from CMdelta import Cm_delta
 
 from scipy import stats
 mdot_fs = 0.048
@@ -25,7 +26,8 @@ intercept = stats.linregress(aoa,delta_e)[1]
 slope_aoa = [i*slope for i in aoa]
 
 
-
+Cm_a = -slope*Cm_delta
+print(Cm_a)
 
 
 plt.plot(aoa,delta_e, "o", label="original data")
