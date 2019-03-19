@@ -130,6 +130,8 @@ def get_Data2():
             #
             temp = float(sheet.cell_value(i, 12))+273.15   #°C-->K
             TAT.append(temp)
+            
+    
     
     #SHIFT IN CENTER OF GRAVITY
     t_cg = []       #time elapsed @ each measurement [s]

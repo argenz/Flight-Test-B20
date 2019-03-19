@@ -25,17 +25,17 @@ for i in mpplist_kg:
     
 
 
-cg_list = [131,131,170,214,214,251,251,288,288]
+cg_normal = [131,131,170,214,214,251,251,288,288]
+cg_walk = [131,131,170,214,214,251,251,170,288]
 
-moment = 0
-total_mass = 0
-for i in range(len(mppl_lbs)):
-    moment += mppl_lbs[i]*cg_list[i] #pounds*inches
-    total_mass += mppl_lbs[i]
+
+def peeps_mom(cg_config):
+    peeps_moment = 0
+    for i in range(len(mppl_lbs)):
+        peeps_moment += mppl_lbs[i]*cg_config[i] #pounds*inches
+      #cg location measured from the nose of the plane
+    return peeps_moment
     
-cg = moment/total_mass  #cg location measured from the nose of the plane
-
-
 #,-*-,coding:,utf-8,-*-
 """
 Created on Wed Mar 13,11:39:32 2019
@@ -65,5 +65,14 @@ def fuel_moment(current_fuel_mass):
     moment = fuel_moments[i-1] + gradient * distance
     
     return moment
+
+def cg_time(UTC_sec, cg_config):
+    EOW_mom = 2677847.5
+    fuel_mom = fuel_moment(fuel_mass(UTC_sec))
+    ppl_mom = peeps_mom(cg_config)
+    total_mom = EOW_mom + fuel_mom + ppl_mom
     
+    total_mass = 9165 + fuel_mass(UTC_sec) + sum(mppl_lbs)
+    
+    return total_mom/total_mass #in inches
 

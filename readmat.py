@@ -17,7 +17,13 @@ for i in range(len(data[0][0])):
     numbers = data[0][0][i][0][0][0]
     #title = data[0][0][i][0][0][2][0][0][0]
     #fd.append(title)
+<<<<<<< HEAD
     fd.append(numbers)   
+=======
+    fd.append(numbers)
+    
+  
+>>>>>>> 1334a84a32f0a909ba64f3eca30f70ac2d63b5ff
     
     
 #every variable list with their data
