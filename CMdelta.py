@@ -9,7 +9,7 @@ from findCG import *
 from DataReader import *
 from data_processing import *
 from ISAmodule import *
-from findCG import *
+
 
 
 rho0 = 1.225
