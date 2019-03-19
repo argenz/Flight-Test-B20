@@ -56,5 +56,5 @@ def delta_e(aircraft, delta_e_meas):
 
     return dDelta_e
 
-print delta_e(cessna, get_Data2()[6])
+print (delta_e(cessna, get_Data2()[6]))
     
