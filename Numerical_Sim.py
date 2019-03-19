@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Mar  6 21:36:01 2019
-
 @author: hksam
 """
 
@@ -71,13 +70,7 @@ sys_symm = SSmaker(C1s,C2s,C3s)
 print sys_symm
 sys_asymm = SSmaker(C1a, C2a, C3a)
 
-
-
-eigenval = np.linalg.eig()
 #y,t = control.step(sys_symm)
 ##
 #plt.plot(t,y)
 #
-
-
-
