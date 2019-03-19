@@ -14,11 +14,11 @@ pplname = get_Data2()[2]
 #pplname.insert(1,"aft cabin1")
 #pplname.insert(2,"aft cabin2")
 
-mpplist_kg = get_Data2()[1]
+mpplist_kg = get_Data2()[0]
 #mpplist_kg.insert(0,100)
 #mpplist_kg.insert(1,200)
 #mpplist_kg.insert(2,200)
-
+print(mpplist_kg)
 mppl_lbs = []
 for i in mpplist_kg:
     mppl_lbs.append(i*2.20462)
@@ -72,7 +72,7 @@ def cg_time(UTC_sec, cg_config):
     ppl_mom = peeps_mom(cg_config)
     total_mom = EOW_mom + fuel_mom + ppl_mom
     
-    total_mass = 9165 + fuel_mass(UTC_sec) + sum(mppl_lbs)
+    total_mass = 3655 + fuel_mass(UTC_sec) + sum(mppl_lbs)
     
     return total_mom/total_mass #in inches
 

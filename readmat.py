@@ -6,7 +6,8 @@ matcon = sio.loadmat('FTISxprt-20180305_124437.mat')
 data = matcon["flightdata"]
 
 
-print(data) 
+
+    
 
 #fd is list containing the matrix with the data 
     
@@ -19,14 +20,16 @@ for i in range(len(data[0][0])):
 
     fd.append(numbers)   
 
-    fd.append(numbers)
+    
     
   
-
+#>>>>>>> 1334a84a32f0a909ba64f3eca30f70ac2d63b5ff
+    
     
 #every variable list with their data
 
 aoa = [fd[0][i][0] for i in range(len(fd[0]))] #angle of attack
+
 
 Deflection_elev_trim = [fd[1][i][0] for i in range(len(fd[1]))] #Deflection of elevator trim
 

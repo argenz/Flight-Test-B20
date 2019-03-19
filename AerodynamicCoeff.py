@@ -5,7 +5,7 @@ Created on Tue Mar 12 14:52:41 2019
 
 @author: FCRA
 """
-from DataReader import get_Data1
+from DataReader import *
 #from ISAmodule import ISA_rho
 #from Cit_par import *
 from ParameterReader import cessna, ISAmodule, OpenThrustFile
@@ -16,10 +16,10 @@ from scipy import stats
 #Tl = [3642.21, 2996.15, 2413.35, 1882.48, 1918.05, 2235.97]	
 #Tr = [3745.21, 3057.76, 2540.09, 2035.8, 	2100.45, 2433.76]
 def AerodynamicCoeffFunc(data, aircraft, ThrustL, ThrustR):
-    mppl = data[0]                    #mass of people
-    OEW = 3504                               #kg 
+    mppl = get_Data2()[0]                    #mass of people
+    OEW = 3655                               #kg 
     mfuel = data[1]                   #mass of fuel 
-    W = (mppl+OEW+mfuel)*9.81 
+    W = (sum(mppl)+OEW+mfuel)*9.81 
 
     hp = data[3]                      #altitude
     rho =[]

@@ -24,10 +24,10 @@ sheet = wb.sheet_by_index(0)
 
 def get_Data1():
     
-    mppl = 0
+    mppl = []
     for i in range(16):
         if i>6:
-            mppl = mppl + sheet.cell_value(i,7)
+            mppl.append(sheet.cell_value(i,7))
     
     mfuel = sheet.cell_value(17, 3)*0.453592  #lbs--->kg
     
@@ -72,10 +72,10 @@ def get_Data1():
 
 def get_Data2():
     
-    mppl = 0
+    mppl = []
     for i in range(16):
         if i>6:
-            mppl = mppl + sheet.cell_value(i,7)
+            mppl.append(sheet.cell_value(i,7))
     
     mfuel = sheet.cell_value(17, 3)*0.453592  #lbs--->kg
     

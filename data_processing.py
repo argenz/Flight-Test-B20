@@ -54,9 +54,9 @@ def make_list(data_list, start_time, end_time):
 #phugoid = make_list(Pressure_Altitude, UTC_Seconds[0] + 2880, UTC_Seconds[0]+3020)
 #plt.plot(phugoid[0], phugoid[1])
 #
-plt.figure(2)
-elevator = make_list(Deflection_of_elevator, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2908)
-plt.plot(elevator[0], elevator[1])
+#plt.figure(2)
+#elevator = make_list(Deflection_of_elevator, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2908)
+#plt.plot(elevator[0], elevator[1])
 #
 #plt.figure(3)
 #f1 = make_list(Fuel1, UTC_Seconds[0], UTC_Seconds[-1])
