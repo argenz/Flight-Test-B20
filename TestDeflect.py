@@ -11,8 +11,9 @@ from data_processing import make_list
 from readmat import Deflection_of_aileron, Deflection_of_elevator, Deflection_of_elevator
 from readmat import UTC_Seconds, Deflection_elev_trim, aoa, Pitch_Angle, true_Airspeed
 from readmat import Pressure_Altitude
-from Numerical_Sim import sys_asymm
-from test import sys_symm
+from Numerical_Sim import sys_symm, sys_asymm
+from ParameterReader import cessna
+#from test import sys_symm
 
 def GetParametersSymm(lsimout):
     # INPUT: State vector from the lsim function
@@ -35,22 +36,33 @@ def GetParametersSymm(lsimout):
 # Elevator input
 U = make_list(Deflection_of_elevator, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
 
-dT = UTC_Seconds[1] - UTC_Seconds[0]
+#dT = UTC_Seconds[1] - UTC_Seconds[0]
 T = np.linspace(U[0][1], U[0][-1], (len(U[0])-1))
+U0 = U[1][0]
 U = np.array(U[1][1::])
+U = U-U0
 
+#validation input
+uValid = make_list(true_Airspeed, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
+alphaValid = make_list(aoa, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
+pitchValid = make_list(Pitch_Angle, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
 
-U0 = U[0]
-U = U - U0
 y = control.lsim(sys_symm, U, T, np.zeros([4,1]))
 u_curl, alpha, theta, pitch_rate, time = GetParametersSymm(y)
-
+uNum = u_curl * cessna.StatFlightCond.V0
 
 plt.figure(1)
-plt.plot(time, u_curl, label = "u_curl")
+plt.plot(uValid[0], uValid[1], label = "Validation")
+plt.plot(time, uNum, label = "Numerical")
+plt.legend()
+plt.figure(2)
 plt.plot(time,alpha, label = "AoA")
+plt.plot(alphaValid[0], alphaValid[1], label = "AoA validation")
+plt.legend()
+plt.figure(3)
 plt.plot(time, theta, label = "pitch angle")
-plt.plot(time, pitch_rate, label = "dimensionless pitch rate")
+plt.plot(pitchValid[0], pitchValid[1], label = "pitch angle Validation")
+#plt.plot(time, pitch_rate, label = "dimensionless pitch rate")
 plt.legend()
 plt.show()
 #plt.plot(t,y)
