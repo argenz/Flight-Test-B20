@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+2#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
 Created on Mon Mar  4 18:15:50 2019
@@ -13,7 +13,7 @@ import numpy as np
 import xlrd 
 
 
-loc = ("REFERENCE_Post_Flight_Datasheet_Flight.xlsx") 
+loc = ("Post_Flight_Datasheet_15_03_V2.xlsx") 
 # To open Workbook 
 wb = xlrd.open_workbook(loc) 
 sheet = wb.sheet_by_index(0) 
@@ -39,7 +39,7 @@ def get_Data1():
     F_fl = []         #??   [kg/s]
     F_fr = []         #??   [kg/s]
     F_used = []       #??   [kg/s]
-    TAT = []          #°C
+    TAT = []          #C
     
     for i in range(33):
         if i > 26:
@@ -65,7 +65,7 @@ def get_Data1():
             f_used = float(sheet.cell_value(i, 8))*0.000125998  #lbs/hr --> kg/s
             F_used.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 9))+273.15    #°C --> K
+            temp = float(sheet.cell_value(i, 9))+273.15    #C --> K
             TAT.append(temp)
     return mppl, mfuel, time, hp, IAS, alpha, F_fl, F_fr, F_used, TAT
             
@@ -93,7 +93,7 @@ def get_Data2():
     F_fl = []         #??   [kg/s]
     F_fr = []         #??   [kg/s]
     F_used = []       #??   [kg/s]
-    TAT = []          #°C
+    TAT = []          #C
     
     for i in range(65):
         if i > 57:
@@ -128,7 +128,7 @@ def get_Data2():
             f_used = float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
             F_used.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 12))+273.15   #°C-->K
+            temp = float(sheet.cell_value(i, 12))+273.15   #C-->K
             TAT.append(temp)
             
     
@@ -144,7 +144,7 @@ def get_Data2():
     F_fl_cg = []     #[kg/s]
     F_fr_cg = []     #[kg/s]
     F_used_cg = []   #[kg/s]
-    TAT_cg = []      #[°C]
+    TAT_cg = []      #[C]
     
     for i in range(76):
         if i > 73:  
@@ -179,7 +179,7 @@ def get_Data2():
             f_used= float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
             F_used_cg.append(f_used)
             #
-            temp = float(sheet.cell_value(i, 12))+273.15   #°C-->K
+            temp = float(sheet.cell_value(i, 12))+273.15   #C-->K
             TAT_cg.append(temp)    
     
     #EIGENMOTIONS ??
@@ -193,29 +193,30 @@ def get_Data2():
 #COPY AND PASE THIS TO YOUR .PY TO HAVE ALL VARIABLES READY TO USE
 
 #mppl = get_Data2()[0]
-#mpplist = get_Data2()[1]    
-#mfuel = get_Data2()[2]
-#time  = get_Data2()[3]
-#hp = get_Data2()[4]
-#IAS = get_Data2()[4]
-#alpha = get_Data2()[5]
-#delta_e = get_Data2()[6]
-#delta_tr  = get_Data2()[7]
-#F_e = get_Data2()[8]
-#F_fl = get_Data2()[9]
-#F_fr = get_Data2()[10]
-#F_used = get_Data2()[11]
-#TAT = get_Data2()[12]
-#t_cg = get_Data2()[13]
-#hp_cg = get_Data2()[14]
-#IAS_cg = get_Data2()[15]
-#alpha_cg = get_Data2()[16]
-#delta_e_cg = get_Data2()[17]
-#delta_tr_cg = get_Data2()[18]
-#F_e_cg = get_Data2()[19]
-#F_fl_cg = get_Data2()[20]
-#F_fr_cg = get_Data2()[21]
-#F_used_cg = get_Data2()[22]
-#TAT_cg = get_Data2()[23]
+#mpplist = get_Data2()[1]   
+#pplname = get_Data2()[2]  
+#mfuel = get_Data2()[3]
+#time  = get_Data2()[4]
+#hp = get_Data2()[5]
+#IAS = get_Data2()[6]
+#alpha = get_Data2()[7]
+#delta_e = get_Data2()[8]
+#delta_tr  = get_Data2()[9]
+#F_e = get_Data2()[10]
+#F_fl = get_Data2()[11]
+#F_fr = get_Data2()[12]
+#F_used = get_Data2()[13]
+#TAT = get_Data2()[14]
+#t_cg = get_Data2()[15]
+#hp_cg = get_Data2()[16]
+#IAS_cg = get_Data2()[17]
+#alpha_cg = get_Data2()[18]
+#delta_e_cg = get_Data2()[19]
+#delta_tr_cg = get_Data2()[10]
+#F_e_cg = get_Data2()[21]
+#F_fl_cg = get_Data2()[22]
+#F_fr_cg = get_Data2()[23]
+#F_used_cg = get_Data2()[24]
+#TAT_cg = get_Data2()[25]
 #
 #print alpha 
