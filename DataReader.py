@@ -182,11 +182,6 @@ def get_Data2():
             temp = float(sheet.cell_value(i, 12))+273.15   #C-->K
             TAT_cg.append(temp)    
     
-    #EIGENMOTIONS ??
-    #
-    #
-    #
-    #
     
     return mppl, mpplist, pplname, mfuel, time, hp, IAS, alpha, delta_e, delta_tr, F_e, F_fl, F_fr, F_used, TAT, t_cg, hp_cg, IAS_cg, alpha_cg, delta_e_cg, delta_tr_cg, F_e_cg, F_fl_cg, F_fr_cg, F_used_cg, TAT_cg
  
@@ -220,3 +215,25 @@ def get_Data2():
 #TAT_cg = get_Data2()[25]
 #
 #print alpha 
+
+def get_eigentimes():
+    #EIGENMOTIONS 
+    
+    a = sheet.cell_value(82, 3).replace(':',' ')
+    phugoid = float(a[0:2])*60 + float(a[3:5])
+            
+    a = sheet.cell_value(83, 3).replace(':',' ')
+    short_period = float(a[0:2])*60 + float(a[3:5])
+    #
+    a = sheet.cell_value(82, 6).replace(':',' ')
+    dutch_roll = float(a[0:2])*60 + float(a[3:5])
+    
+    a = sheet.cell_value(83, 6).replace(':',' ')
+    dutch_roll_yd = float(a[0:2])*60 + float(a[3:5])
+    
+    a = sheet.cell_value(82, 9).replace(':',' ')
+    aper_roll = float(a[0:2])*60 + float(a[3:5])
+    
+    a = sheet.cell_value(83, 9).replace(':',' ')
+    spiral = float(a[0:2])*60 + float(a[3:5])
+    return phugoid, short_period, dutch_roll, dutch_roll_yd, aper_roll, spiral
