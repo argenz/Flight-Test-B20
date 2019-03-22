@@ -9,9 +9,6 @@ from scipy import signal
 import numpy as np
 from Cit_par import *
 
-Tl = [1879.17, 1930.19, 1972.48, 2016.4, 1844.79, 1838.59, 1804.57]	
-Tr = [2052.36, 2106.61, 2144.6, 2197.46, 2014.83, 2006.7, 1961.74]
-
 def OpenThrustFile(file):
 #   Description: needed function to convert the .txt/.DAT file into useable format
 #   INPUT: thrust file, e.g. "thrust.DAT"
@@ -206,8 +203,6 @@ cessna.AeroProp = (cessnaAeroProp)
 cessna.Geometry = (cessnaGeometry)
 cessna.Inertia = (cessnaInertia)
 cessna.StabDeriv = (cessnaStabDeriv)
-
-
 
 
 ISAmodule = ISAProperties(rho0, lmbda, Temp0, R, g)
