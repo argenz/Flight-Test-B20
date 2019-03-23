@@ -20,103 +20,108 @@ for i in range(len(data[0][0])):
     #fd.append(title)
     fd.append(numbers)
     
-
+  
 #every variable list with their data
 
-aoa = [fd[0][i][0]*0.0174532925 for i in range(len(fd[0]))]#angle of attack #DEG --> rad
-   
-Deflection_elev_trim = [fd[1][i][0]*0.0174532925 for i in range(len(fd[1]))] #Deflection of elevator trim   #DEG --> rad
+aoa = [fd[0][i][0] for i in range(len(fd[0]))] #angle of attack
 
-Force_elevator_control_wheel = [fd[2][i][0] for i in range(len(fd[2]))] #Force on elevator control wheel  #N
+Deflection_elev_trim = [fd[1][i][0] for i in range(len(fd[1]))] #Deflection of elevator trim
 
-Fuel_mass_flow1 = [fd[3][i][0]*0.000125997881 for i in range(len(fd[3]))] #Engine 1: Fuel mass flows    #lbs/hr --> kg/s
+Force_elevator_control_wheel = [fd[2][i][0] for i in range(len(fd[2]))] #Force on elevator control wheel
 
-Fuel_mass_flow2 = [fd[4][i][0]*0.000125997881 for i in range(len(fd[4]))] #Engine 2: Fuel mass flow    #lbs/hr --> kg/s
+Fuel_mass_flow1 = [fd[3][i][0] for i in range(len(fd[3]))] #Engine 1: Fuel mass flows
 
-#Inter_Turbine_Temperature1  = [fd[5][i][0] for i in range(len(fd[5]))] #Engine 1: Inter Turbine Temperature (ITT)   #C
-#
-#Inter_turbine_temperature2  = [fd[6][i][0] for i in range(len(fd[6]))] #Engine 2: Inter turbine temperature (ITT)  #C
+Fuel_mass_flow2 = [fd[4][i][0] for i in range(len(fd[4]))] #Engine 2: Fuel mass flow
 
-#Oil_pressure1 = [fd[7][i][0] for i in range(len(fd[7]))] #Engine 1: Oil pressure    #psi
-#
-#Oil_pressure2 = [fd[8][i][0] for i in range(len(fd[8]))] #Engine 2: Oil pressure    #psi
+Inter_Turbine_Temperature1  = [fd[5][i][0] for i in range(len(fd[5]))] #Engine 1: Inter Turbine Temperature (ITT)
 
-Deflection_of_Control_Column = [fd[9][i][0]*0.0174532925 for i in range(len(fd[10]))] #Stick Deflection    #deg --> rad
+Inter_turbine_temperature2  = [fd[6][i][0] for i in range(len(fd[6]))] #Engine 2: Inter turbine temperature (ITT)
 
-#Fan_speed1 = [fd[10][i][0] for i in range(len(fd[9]))] #Engine 1: Fan speed (N1)         #%
-#
-#Turbine_speed1 = [fd[11][i][0] for i in range(len(fd[10]))] #Engine 1: Turbine speed (N2)  #%
-#
-#Fan_speed2 = [fd[12][i][0] for i in range(len(fd[11]))] #Engine 2: Fan speed (N1)     #%
-#
-#Turbine_speed2 = [fd[13][i][0] for i in range(len(fd[12]))] #Engine 2: Turbine speed (N2)  #%
+Oil_pressure1 = [fd[7][i][0] for i in range(len(fd[7]))] #Engine 1: Oil pressure
 
-Fuel1 = [fd[14][i][0]*0.45359237 for i in range(len(fd[13]))]  #Engine 1         #lbs --> kg
+Oil_pressure2 = [fd[8][i][0] for i in range(len(fd[8]))] #Engine 2: Oil pressure
 
-Fuel2 = [fd[15][i][0]*0.45359237 for i in range(len(fd[14]))]  #Engine 2         #lbs --> kg
+Deflection_of_Control_Column = [fd[9][i][0] for i in range(len(fd[10]))] #Stick Deflection
 
-Deflection_of_aileron = [fd[16][i][0]*0.0174532925 for i in range(len(fd[15]))]   #deg --> rad
+Fan_speed1 = [fd[10][i][0] for i in range(len(fd[9]))] #Engine 1: Fan speed (N1)
 
-Deflection_of_elevator = [fd[17][i][0]*0.0174532925 for i in range(len(fd[16]))]  #deg --> rad
+Turbine_speed1 = [fd[11][i][0] for i in range(len(fd[10]))] #Engine 1: Turbine speed (N2)
 
-Deflection_of_rudder = [fd[18][i][0]*0.0174532925 for i in range(len(fd[17]))]    #deg --> rad
+Fan_speed2 = [fd[12][i][0] for i in range(len(fd[11]))] #Engine 2: Fan speed (N1)
+
+Turbine_speed2 = [fd[13][i][0] for i in range(len(fd[12]))] #Engine 2: Turbine speed (N2)
+
+Fuel1 = [fd[14][i][0] for i in range(len(fd[13]))]  #Engine 1
+
+Fuel2 = [fd[15][i][0] for i in range(len(fd[14]))]  #Engine 2
+
+Deflection_of_aileron = [fd[16][i][0] for i in range(len(fd[15]))]
+
+Deflection_of_elevator = [fd[17][i][0] for i in range(len(fd[16]))]
+
+Deflection_of_rudder = [fd[18][i][0] for i in range(len(fd[17]))]
 
 #UTC Date DD:MM:YY = [fd[19][i][0] for i in range(len(fd[18]))]
 
-UTC_Seconds = [fd[20][i][0] for i in range(len(fd[19]))]                #sec
+UTC_Seconds = [fd[20][i][0] for i in range(len(fd[19]))]
 
-Roll_Angle = [fd[21][i][0]*0.0174532925 for i in range(len(fd[20]))]                 #deg -->rad
+Roll_Angle = [fd[21][i][0] for i in range(len(fd[20]))]
 
-Pitch_Angle = [fd[22][i][0]*0.0174532925 for i in range(len(fd[21]))]                #deg --> rad
+Pitch_Angle = [fd[22][i][0] for i in range(len(fd[21]))]
 
 #<no description> = [fd[23][i][0] for i in range(len(fd[22]))]
 
-GNSS_Latitude = [fd[24][i][0]*0.0174532925 for i in range(len(fd[23]))]              #deg --> rad
+GNSS_Latitude = [fd[24][i][0] for i in range(len(fd[23]))]
 
-GNSS_Longitude = [fd[25][i][0]*0.0174532925 for i in range(len(fd[24]))]            #deg --> rad
+GNSS_Longitude = [fd[25][i][0] for i in range(len(fd[24]))]
 
-Body_Roll_Rate = [fd[26][i][0]*0.0174532925 for i in range(len(fd[25]))]            #deg/s --> rad/s
+Body_Roll_Rate = [fd[26][i][0] for i in range(len(fd[25]))]
 
-Body_Pitch_Rate = [fd[27][i][0]*0.0174532925 for i in range(len(fd[26]))]           #deg/s --> rad/s
+Body_Pitch_Rate = [fd[27][i][0] for i in range(len(fd[26]))]
 
-Body_Yaw_Rate = [fd[28][i][0]*0.0174532925 for i in range(len(fd[27]))]              #deg/s --> rad/s
+Body_Yaw_Rate = [fd[28][i][0] for i in range(len(fd[27]))]
 
-#Body_Long_Accel = [fd[29][i][0] for i in range(len(fd[28]))]            #g
-#
-#Body_Lat_Accel = [fd[30][i][0] for i in range(len(fd[29]))]             #g
-#
-#Body_Norm_Accel = [fd[31][i][0] for i in range(len(fd[30]))]            #g
-#
-#Along_Heading_Accel = [fd[32][i][0] for i in range(len(fd[31]))]        #g
-#
-#Cros_Heading_Accel = [fd[33][i][0] for i in range(len(fd[32]))]        #g
-#
-#Vertical_Accel = [fd[34][i][0] for i in range(len(fd[33]))]        #g
+Body_Long_Accel = [fd[29][i][0] for i in range(len(fd[28]))]
 
-Static_Air_Temperature = [fd[35][i][0]+274.15 for i in range(len(fd[3]))] #C --> kelvin
+Body_Lat_Accel = [fd[30][i][0] for i in range(len(fd[29]))]
 
-Total_Air_Temperature = [fd[36][i][0]+274.15 for i in range(len(fd[35]))] #C --> kelvin
+Body_Norm_Accel = [fd[31][i][0] for i in range(len(fd[30]))]
 
-Pressure_Altitude = [fd[37][i][0]*0.3048 for i in range(len(fd[36]))]        #  (1013.25 mB)  #ft --> m
+Along_Heading_Accel = [fd[32][i][0] for i in range(len(fd[31]))]
 
-#Baro_Corrected_Altitude  = [fd[38][i][0] for i in range(len(fd[37]))]  #ft
+Cros_Heading_Accel = [fd[33][i][0] for i in range(len(fd[32]))]
+
+Vertical_Accel = [fd[34][i][0] for i in range(len(fd[33]))]
+
+Static_Air_Temperature = [fd[35][i][0] for i in range(len(fd[34]))]
+
+Total_Air_Temperature = [fd[36][i][0] for i in range(len(fd[35]))]
+
+Pressure_Altitude = [fd[37][i][0] for i in range(len(fd[36]))]          #(1013.25 mB)
+
+Baro_Corrected_Altitude  = [fd[38][i][0] for i in range(len(fd[37]))] 
 
 #<no description> = [fd[39][i][0] for i in range(len(fd[38]))]
 
 Mach = [fd[40][i][0] for i in range(len(fd[39]))]
 
-Computed_Airspeed = [fd[41][i][0]*0.514444444 for i in range(len(fd[40]))]   #kts --> m/s
+Computed_Airspeed = [fd[41][i][0] for i in range(len(fd[40]))]
 
-true_Airspeed = [fd[42][i][0]*0.514444444 for i in range(len(fd[41]))]    #kts --> m/s
+true_Airspeed = [fd[42][i][0] for i in range(len(fd[41]))]
 
-#Altitude_Rate = [fd[43][i][0] for i in range(len(fd[42]))]   #ft/min
-#
-#Measurement_Running = [fd[44][i][0] for i in range(len(fd[43]))]  #
+Altitude_Rate = [fd[43][i][0] for i in range(len(fd[42]))]
+
+Measurement_Running = [fd[44][i][0] for i in range(len(fd[43]))]
 
 #Numberof Measurements Ready = []
 #Status of graph = []
 #Active Screen = []
 #T = []
+#time = np.arange(0,43641,1)
 
+#time = np.array(Pitch_Angle)/np.array(Body_Pitch_Rate
+print Deflection_of_Control_Column
 
-    
+#plt.figure()
+#plt.plot(time, Altitude_Rate)
+# plt.show()

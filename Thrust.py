@@ -11,22 +11,25 @@ from ParameterReader import ISAmodule
 import numpy as np
 #CL-CD series 1
 
-#h1 = get_Data1()[3]
-#IAS1 = get_Data1()[4]
-#F_fl1 = get_Data1()[6]
-#F_fr1 = get_Data1()[7]
-#TAT1 = get_Data1()[9]
-#
+h1 = get_Data1()[3]
+IAS1 = get_Data1()[4]
+F_fl1 = get_Data1()[6]
+F_fr1 = get_Data1()[7]
+TAT1 = get_Data1()[9]
+
 ##Elevator trim curve
 #
-#h2 = get_Data2()[3]
-#IAS2 = get_Data2()[4]
-#F_fl2 = get_Data2()[9]
-#F_fr2 = get_Data2()[10]
-#TAT2 = get_Data2()[12]
+h2 = get_Data2()[3]
+IAS2 = get_Data2()[4]
+F_fl2 = get_Data2()[9]
+F_fr2 = get_Data2()[10]
+TAT2 = get_Data2()[12]
 
+## Standard Thrust Coefficient
+mdot_fs = [0.048]*len(F_fl2) # kg/s
 
 def thrust(h,IAS,F_fl,F_fr,TAT):
+    
     #constants
     k = 1.4   
     
@@ -45,8 +48,6 @@ def thrust(h,IAS,F_fl,F_fr,TAT):
         Ts_reali = TAT[i]/(1-((k-1)/2)*Mi**2)
         Tdiffi = Ts_reali - ISAmodule.ISA_rho(hi)[0]
         
-#        F_fli = F_fl[i]
-#        F_fri = F_fr[i]
         data_thrusti = [hi, Mi, Tdiffi, F_fl[i], F_fr[i]]
         data_thrust.append(data_thrusti)
         
@@ -60,4 +61,4 @@ def thrust(h,IAS,F_fl,F_fr,TAT):
     
     datfile.close()
     
-#thrust(h2, IAS2, F_fl2, F_fr2, TAT2)
+thrust(h2, IAS2, mdot_fs, mdot_fs, TAT2)

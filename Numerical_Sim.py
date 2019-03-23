@@ -8,21 +8,20 @@ from ParameterReader import cessna
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
-import control.matlab as control
 
 #rewrite linear system into SS: x_bar_dot = AX + Bu
-def SSmaker(a, b, c):
-    
-    A = np.dot(slin.inv(a),-b)
-    B = np.dot(slin.inv(a),-c)  
-    C = np.array([[1, 0, 0, 0],
-             [0, 1, 0, 0],
-             [0, 0, 1, 0],
-             [0, 0, 0, 1]])
-    D = np.zeros(np.shape(c))
-    print np.linalg.eig(A)
-    
-    return control.ss(A,B,C,D)
+#def SSmaker(a, b, c):
+#    
+#    A = np.dot(slin.inv(a),-b)
+#    B = np.dot(slin.inv(a),-c)  
+#    C = np.array([[1, 0, 0, 0],
+#             [0, 1, 0, 0],
+#             [0, 0, 1, 0],
+#             [0, 0, 0, 1]])
+#    D = np.zeros(np.shape(c))
+#    print(np.linalg.eig(A))
+#    
+#    return control.ss(A,B,C,D)
 
 ## SYMMETRIC MOTION
     
@@ -65,12 +64,35 @@ C3a = np.array([[-cessna.StabDeriv.CYda, -cessna.StabDeriv.CYdr],
                 [-cessna.StabDeriv.Cnda, -cessna.StabDeriv.Cndr]])
     
 ## State-Space Models:
-    
-sys_symm = SSmaker(C1s,C2s,C3s)
+#    
+#sys_symm = SSmaker(C1s,C2s,C3s)
 #print sys_symm
-sys_asymm = SSmaker(C1a, C2a, C3a)
+
+# symmetric
+
+def SSmaker2(a, b, c):  
+    A = np.dot(slin.inv(a),-b)
+    B = np.dot(slin.inv(a),-c)
+    return A,B
+
+def reaction_sym(v, alpha, theta, q, uvector, step_size, simtime):
+    x = [[u],[alpha],[theta],[q]]
+    x_list = []    
+    t = 0
+    A = SSmaker2(C1s, C2s, C3s)[0]
+    B = SSmaker2(C1s, C2s, C3s)[1]
+    
+    for i in range(0, simtime/stepsize):
+        u = u_vector[i]
+        xdot = np.dot(A,x) + np.dot(B,u)
+        x += xdot*stepsize
+        x_list.append(x)
+        t = t + stepsize
+        x_list.append(x)
+
 
 #y,t = control.step(sys_symm)
 ##
 #plt.plot(t,y)
 #
+

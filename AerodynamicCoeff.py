@@ -13,10 +13,8 @@ from ParameterReader import cessna, ISAmodule, OpenThrustFile
 import numpy as np
 from scipy import stats
 
-#Tl = [3642.21, 2996.15, 2413.35, 1882.48, 1918.05, 2235.97]	
-#Tr = [3745.21, 3057.76, 2540.09, 2035.8, 	2100.45, 2433.76]
 def AerodynamicCoeffFunc(data, aircraft, ThrustL, ThrustR):
-    mppl = data[0]                    #mass of people
+    mppl = np.sum(data[0])                #mass of people
     OEW = 3504                               #kg 
     mfuel = data[1]                   #mass of fuel 
     W = (mppl+OEW+mfuel)*9.81 
@@ -56,6 +54,10 @@ def AerodynamicCoeffFunc(data, aircraft, ThrustL, ThrustR):
     e = 1/(slope*cessna.Geometry.A*np.pi)
     return CL, CD0, CD, e, VAS
 
+F= OpenThrustFile("thrust1.DAT")
+CL, CD0, CD, e, VAS = AerodynamicCoeffFunc(get_Data1(), cessna, F[:,0], F[:,1])
+#alpha = get_Data1()[5]
+#plt.plot(CL, alpha)
 
 
 
