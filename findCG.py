@@ -74,3 +74,7 @@ def cg_time(UTC_sec, cg_config):
     
     return total_mom/total_weight #in meter
 
+def GetMass(UTC_sec):
+    total_weight = 9165*4.44822 + fuel_weight(UTC_sec) + sum(ppl_weights)
+
+    return total_weight #in N

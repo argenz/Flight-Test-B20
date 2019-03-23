@@ -8,42 +8,43 @@ Created on Tue Mar 12 14:52:41 2019
 from DataReader import get_Data1
 #from ISAmodule import ISA_rho
 #from Cit_par import *
-from ParameterReader import cessna, ISAmodule, OpenThrustFile
-#import matplotlib.pyplot as plt
+from ParameterReader import cessna, ISAmodule, OpenThrustFile, GetAirspeeds
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
+from readmat import UTC_Seconds
+from findCG import GetMass
 
 def AerodynamicCoeffFunc(data, aircraft, ThrustL, ThrustR):
-    mppl = np.sum(data[0])                #mass of people
-    OEW = 3504                               #kg 
-    mfuel = data[1]                   #mass of fuel 
-    W = (mppl+OEW+mfuel)*9.81 
-
-    hp = data[3]                      #altitude
-    rho =[]
-    for i in hp:
-        irho, iT = ISAmodule.ISA_rho(i)
-        rho.append(irho)                     #get rho from altitudes
-
-
-    IAS = data[4]                     #indicated airspeed 
-    VAS =  []
-    CL = []
-    for i in range(len(IAS)):                #convert to True airspeed
-        vas = np.sqrt(ISAmodule.rho0/rho[i])*IAS[i]
-        VAS.append(vas)
-        cl = W/(0.5*rho[i]*vas**2*cessna.Geometry.S)
-        CL.append(cl)
     
+    IAS = data[4][:-1]
+    TAT = data[9][:-1]
+    hp = data[3][:-1]
+    time = data[2][:-1]
+    
+    rho = []
+    for hi in hp:
+        rhoi, Ti = ISAmodule.ISA_rho(hi)
+        rho.append(rhoi)                        #get rho from altitudes
+        
+    TAS = []
+    CL = []
+    
+    for i in range(len(IAS)):                #convert to True airspeed
+        tas = GetAirspeeds(IAS[i], TAT[i], hp[i], time[i])[1]
+#        print "M:", GetAirspeeds(IAS[i], TAT[i], hp[i], time[i])[0]
+        TAS.append(tas)
+        W = GetMass(UTC_Seconds[0]+time[i])
+        print W
+        cl = W/(.5*rho[i]*tas**2*cessna.Geometry.S)
+        CL.append(cl)
 
-    T = []
     CD = []
     for i in range(len(ThrustL)):
-        t = (ThrustL[i]+ThrustR[i])
-        T.append(t)	
-        cd = t/(0.5*rho[i]*VAS[i]**2*cessna.Geometry.S)
+        Ti = ThrustL[i]+ThrustR[i]
+        cd = Ti/(.5*rho[i]*TAS[i]**2*cessna.Geometry.S)
         CD.append(cd)
-        
+
     #FINDING CD0 
     poli = np.polyfit(CL, CD, 2)
     CD0 = poli[2]
@@ -52,12 +53,20 @@ def AerodynamicCoeffFunc(data, aircraft, ThrustL, ThrustR):
     slope = stats.linregress(np.array(CL)**2, CD)[0]
     
     e = 1/(slope*cessna.Geometry.A*np.pi)
-    return CL, CD0, CD, e, VAS
+    return CL, CD0, CD, e, TAS
 
-F= OpenThrustFile("thrust1.DAT")
-CL, CD0, CD, e, VAS = AerodynamicCoeffFunc(get_Data1(), cessna, F[:,0], F[:,1])
-#alpha = get_Data1()[5]
-#plt.plot(CL, alpha)
+F = OpenThrustFile("thrust1n.DAT")
+CL, CD0, CD, e, TAS = AerodynamicCoeffFunc(get_Data1(), cessna, F[:-1,0], F[:-1,1])
+alpha = get_Data1()[5]
+plt.scatter(np.rad2deg(alpha[:-1]), CL)
+print "CLa:", stats.linregress(alpha[:-1],CL)[0], "CD0:", CD0, "e:", e
+
+#alpha = get_Data1()[5][:-2]
+#plt.scatter(np.rad2deg(alpha), CL)
+#print "CLa:", stats.linregress(alpha,CL)[0], "CD0:", CD0, "e:", e
+
+#plt.plot(alpha, CD)
+# e: 0.7813870700721104; CD0: 0.02072961029837115; CLa = 4.2878514154047185
 
 
 
