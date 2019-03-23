@@ -7,133 +7,148 @@ Created on Sun Mar 17 14:02:58 2019
 import numpy as np
 import matplotlib.pyplot as plt
 import control.matlab as control
-from data_processing import make_list
-from readmat import Deflection_of_aileron, Deflection_of_elevator, Deflection_of_elevator
-from readmat import UTC_Seconds, Deflection_elev_trim, aoa, Pitch_Angle, true_Airspeed
-from readmat import Pressure_Altitude, Body_Pitch_Rate
-from Numerical_Sim import sys_symm, sys_asymm
+from Numerical_Sim import InitSS
 from ParameterReader import cessna
+from Cit_par import Ue, Ua, Ur, uValid, alphaValid, pitchValid, pitchRateValid
+from Cit_par import rollValid, yawRateValid, rollRateValid
 #from test import sys_symm
 
-
-
 ##### MAIN ######
-# Elevator input
-U = make_list(Deflection_of_elevator, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
+def GetParametersSim(lsimout):
+    # INPUT: State vector from the lsim function
+    # OUTPUT: returns the columns of the state space vector AND time vector
+    # Description: Simple function to separate the tuple of size three into 
+    # separate variables given the state space vector.
+    
+    state_vector = lsimout[2]
 
-#dT = UTC_Seconds[1] - UTC_Seconds[0]
-#T = np.linspace(U[0][1], U[0][-1], (len(U[0])-1))
-#U0 = U[1][0]
-#U = np.array(U[1][1::])
-#U = U-U0
-
-#validation input
-uValid = make_list(true_Airspeed, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
-alphaValid = make_list(aoa, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
-pitchValid = make_list(Pitch_Angle, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
-pitchRateValid = make_list(Body_Pitch_Rate, UTC_Seconds[0] + 2889, UTC_Seconds[0]+2980)
-
-def SimulateResponse(sys, DefAileron, ValidVelocity, ValidAoA, ValidPitchAngle
+    #Y1: symmetrical case: Y1 = u_curl, Y2 = AoA, Y3 = theta/pitch, Y4 = pitch rate
+    Y1 = state_vector[:,0]
+    Y2 = state_vector[:,1]
+    Y3 = state_vector[:,2]
+    Y4 = state_vector[:,3]
+    
+    return Y1, Y2, Y3, Y4
+def SimulateSymmResponse(sys, DefElevator, ValidVelocity, ValidAoA, ValidPitchAngle
                      , ValidPitchRate):
     #INPUT: SS model and given parameters of type list
     #OUTPUT: validation plots
     
-#    #constants
-#    KnotsToMs = 0.51444
     # make time vector
-    T = np.linspace(DefAileron[0][0], DefAileron[0][-1],len(DefAileron[0]))
-    print (T[2]-T[1])
+    T = np.linspace(DefElevator[0][0], DefElevator[0][-1],len(DefElevator[0]))
+#    print (T[2]-T[1])
     # make INPUT vector
-    DefAileron0 = DefAileron[1][0]
-    DefAileron = np.array(DefAileron[1][:])
-    DefAileron = DefAileron - DefAileron0
-    y = control.lsim(sys, DefAileron, T, np.zeros([len(sys.B),1]))
-    
-    def GetParametersSymm(lsimout):
-        # INPUT: State vector from the lsim function
-        # OUTPUT: returns the columns of the state space vector AND time vector
-        # Description: Simple function to separate the tuple of size three into 
-        # separate variables given the state space vector.
+    DefElevator0 = DefElevator[1][0]
+    DefElevator = np.array(DefElevator[1][:])
+    DefElevator = DefElevator - DefElevator0
+    U0 = [[uValid[1][0]],[alphaValid[1][0]],
+          [pitchValid[1][0]], [pitchRateValid[1][0]]]
+    zero = np.zeros([4,1])
+    y = control.lsim(sys, DefElevator, T, U0)
         
-#        time_vector = lsimout[1]
-        state_vector = lsimout[2]
-
-        #Y1: symmetrical case: Y1 = u_curl, Y2 = AoA, Y3 = theta/pitch, Y4 = pitch rate
-        Y1 = state_vector[:,0]
-        Y2 = state_vector[:,1]
-        Y3 = state_vector[:,2]
-        Y4 = state_vector[:,3]
-        
-        return Y1, Y2, Y3, Y4
-    
     if np.size(sys.B) == 4:
-        u_curl, AoA, PitchAngle, PitchRate_curl = GetParametersSymm(y)
-        uNum = u_curl* cessna.StatFlightCond.V0
-        PitchRate = PitchRate_curl * cessna.StatFlightCond.V0/cessna.Geometry.c
-        print ValidVelocity[1]
-    else: raise ValueError
-#    elif np.size(sys.B) == 8:
-#        beta, phi, p_curl, r_curl = GetParametersSymm(y)
-#        p = p_curl * 2*cessna.StatFlightCond.V / cessna.Geometry.b
-#        r = r_curl * 2*cessna.StatFlightCond.V / cessna.Geometry.b
-        
+        uCurl, AoA, PitchAngle, PitchRate_curl = GetParametersSim(y)
+        AoA = AoA + alphaValid[1][0]
+        PitchAngle = PitchAngle #+ pitchValid[1][0]
+        # redimension parameters:
+        uNum = uCurl
+        PitchRate = PitchRate_curl #+ pitchRateValid[1][0]       
     
     ## subtract 1st element from all lists
     
     #validation lists
-#    ValidAoA[1] = ValidAoA[1] - ValidAoA[1][0]
-#    ValidVelocity[1] = np.asarray(ValidVelocity[1]) - cessna.StatFlightCond.V0
-#    ValidPitchAngle[1] = ValidPitchAngle[1] - ValidPitchAngle[1][0]
-#    ValidPitchRate[1] = ValidPitchRate[1] - ValidPitchRate[1][0]
-    
-    #Numerical lists
-#    uNum = uNum - cessna.StatFlightCond.V0
-#    AoA = AoA - cessna.StatFlightCond.alpha0
-#    PitchAngle = PitchAngle - cessna.StatFlightCond.th0
-#    PitchRate = PitchRate - PitchRate[0]
-    
-    plt.subplot(411)
-    plt.plot(ValidVelocity[0], ValidVelocity[1], label = "Validation velocity")
+    plt.figure(1)
+    plt.subplot(511)
     plt.plot(T, uNum, label = "Numerical: velocity")
+    plt.plot(ValidVelocity[0], ValidVelocity[1], label = "Validation velocity")
     plt.legend()
-    plt.subplot(412)
-    plt.plot(T, AoA, label = "AoA")
-    plt.plot(ValidAoA[0], ValidAoA[1], label = "AoA validation")
+    
+    plt.subplot(512)
+    plt.plot(T, AoA, label = "Numerical: AoA")
+    plt.plot(ValidAoA[0], ValidAoA[1], label = "Validation: AoA")
     plt.legend()
-    plt.subplot(413)
-    plt.plot(T, PitchAngle, label = "pitch angle")
-    plt.plot(ValidPitchAngle[0], ValidPitchAngle[1], label = "pitch angle Validation")
+    
+    plt.subplot(513)
+    plt.plot(T, (PitchAngle), label = "Numerical: pitch angle")
+    plt.plot(ValidPitchAngle[0], (ValidPitchAngle[1]), label = "Validation: pitch angle")
     plt.legend()
-    plt.subplot(414)
-    plt.plot(T, PitchRate, label = "pitch rate")
-    plt.plot(ValidPitchRate[0], ValidPitchRate[1], label = "pitch rate validation")
-    #plt.plot(time, pitch_rate, label = "dimensionless pitch rate")
+    
+    plt.subplot(514)
+    plt.plot(T, PitchRate, label = "Numerical: pitch rate")
+    plt.plot(ValidPitchRate[0], ValidPitchRate[1], label = "Validation: pitch rate")
+#    plt.plot(time, pitch_rate, label = "dimensionless pitch rate")
     plt.legend()
+    
+    plt.subplot(515)
+    plt.plot(T, DefElevator, label = "Input Elevator")
+    plt.legend()
+    
     plt.show()
     
     print("done")
-    return
-print(SimulateResponse(sys_symm, U, uValid, alphaValid, pitchValid, pitchRateValid))
-#plt.plot(t,y)
-#T = np.linspace(0, 20, 100)
-#y,t = control.impulse(sys_symm,T)
-##
-#plt.plot(t,y)
+    return True
+
+def SimulateAsymmResponse(sys, DefAileron, DefRudder, ValidRollAngle
+                     , ValidRollRate, ValidYawRate):
+    #INPUT: SS model and given parameters of type list
+    #OUTPUT: validation plots
+    
+    # make time vector
+    T = np.linspace(DefAileron[0][0], DefAileron[0][-1],len(DefAileron[0]))
+
+    # make INPUT vector
+    DefAileron0 = DefAileron[1][0]
+    DefAileron = np.array(DefAileron[1][:])
+    DefAileron = DefAileron - DefAileron0
+    
+    DefRudder0 = DefRudder[1][0]
+    DefRudder = np.array(DefRudder[1][:])
+    DefRudder = DefRudder - DefRudder0
+    
+    U = np.stack((Ua[1],Ur[1]), axis = -1)
+    zero = np.zeros([4,1])
+    y = control.lsim(sys, U, T, zero)
+        
+    # yaw: beta; phi: roll, p: roll rate, r: pitch rate
+    beta, phi, p, r = GetParametersSim(y)
+    phi = phi + ValidRollAngle[1][0]
+    p = p #+ ValidRollRate[1][0]
+    r = r #+ ValidYawRate[1][0]
+    
+    
+    # plotting
+    plt.figure(2)
+    plt.subplot(411)
+    plt.plot(T, phi, label = "Numerical: Roll Angle")
+    plt.plot(ValidRollAngle[0], ValidRollAngle[1], label = "Validation: Roll Angle")
+    plt.legend()
+    
+    plt.subplot(412)
+    plt.plot(T, p, label = "Numerical: Roll Rate")
+    plt.plot(ValidRollRate[0], ValidRollRate[1], label = "Validation: Roll Rate")
+    plt.legend()
+    
+    plt.subplot(413)
+    plt.plot(T, r, label = "Numerical: Yaw Rate")
+    plt.plot(ValidYawRate[0], (ValidYawRate[1]), label = "Validation: Yaw Rate")
+    plt.legend()
+    
+    plt.subplot(414)    
+    plt.plot(T, DefAileron, label = "Input Aileron")
+    plt.plot(T, DefRudder, label = "Input Rudder")
+    plt.legend()
+    
+    plt.show()   
+        
+    
+    ## subtract 1st element from all lists
+    
+    #validation lists    
+    print ("done")
+    return True
+
+sys_symm, sys_asymm = InitSS()
+SimulateSymmResponse(sys_symm, Ue, uValid, alphaValid, pitchValid, pitchRateValid)
+SimulateAsymmResponse(sys_asymm, Ua, Ur, rollValid, rollRateValid, yawRateValid)
 
 
-
-
-#-----------------------------------------------------------------------------#
-#print ("These are the values you need to set up:")
-#hp = make_list(Pressure_Altitude, UTC_Seconds[0] + 2889,UTC_Seconds[0] + 2908)
-#V     =  make_list(true_Airspeed, UTC_Seconds[0] + 2889,UTC_Seconds[0] + 2908)       # true airspeed in the stationary flight condition [m/sec]
-#alpha =      make_list(aoa, UTC_Seconds[0] + 2889, UTC_Seconds[0] + 2908)       # angle of attack in the stationary flight condition [rad]
-#th    =      make_list(Pitch_Angle, UTC_Seconds[0] + 2889, UTC_Seconds[0] + 2908)     # pitch angle in the stationary flight condition [rad]
-#
-#V0 = V[1][1]
-#alpha0 = alpha[1][1]
-#th0 = th[1][1]
-#hp0 = hp[1][1]
-
-# Simulation
-#y,t = control.lsim(sys_symm, U[1][1::], T)
