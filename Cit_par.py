@@ -14,6 +14,7 @@ from findCG import GetMass
 # Choose Eigenmotion:
 tStart, tEnd, ti = phugoid()
 
+
 # Elevator input
 Ue = make_list(Deflection_of_elevator, tStart, tEnd)
 Ua = make_list(Deflection_of_aileron, tStart, tEnd)
@@ -41,7 +42,9 @@ alpha0 =      alpha0       # angle of attack in the stationary flight condition 
 th0    =      th0     # pitch angle in the stationary flight condition [rad]
 
 # Aircraft mass
-m      =     GetMass(tStart)      # mass [kg]
+W     =     GetMass(tStart)      #weight in [N]
+m = W/9.81
+
 
 # aerodynamic properties
 e      =     0.7813870700721104       # Oswald factor [ ]
@@ -77,7 +80,6 @@ g      = 9.81            # [m/sec^2] (gravity constant)
 
 # air density [kg/m^3]
 rho    = rho0 * np.power( ((1+(lmbda * hp0 / Temp0))), (-((g / (lmbda*R)) + 1)))   
-W      = m * g            # [N]       (aircraft weight)
 
 # Constant values concerning aircraft inertia
 
