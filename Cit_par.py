@@ -1,17 +1,15 @@
 # Citation 550 - Linear simulation
 
-# xcg = 0.25 * c
-
 # Stationary flight condition
+<<<<<<< HEAD
 import numpy as np
 #from AerodynamicCoeff import *
 #from DataReader import *
+=======
+>>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
 
-hp0    =     123         # pressure altitude in the stationary flight condition [m]
-V0     =     234         # true airspeed in the stationary flight condition [m/sec]
-alpha0 =     57          # angle of attack in the stationary flight condition [rad]
-th0    =     10          # pitch angle in the stationary flight condition [rad]
 
+<<<<<<< HEAD
 # Aircraft mass
 #mppl = get_Data1()[0]                    #mass of people
 oew = 3504                               #kg 
@@ -24,10 +22,59 @@ m =3566#kg
 e      =     0.64           # Oswald factor [ ]
 CD0    =     0.11              # Zero lift drag coefficient [ ]
 CLa    =     4.6             # Slope of CL-alpha curve [ ]
+=======
+import numpy as np
+from TimeIntervals import short_period, phugoid, dutch_roll, aper_roll, spiral
+from data_processing import make_list
+from readmat import Deflection_of_aileron, Deflection_of_elevator, Deflection_of_rudder, Deflection_elev_trim
+from readmat import Pitch_Angle, Roll_Angle
+from readmat import UTC_Seconds, aoa, true_Airspeed
+from readmat import Pressure_Altitude, Body_Pitch_Rate, Body_Roll_Rate, Body_Yaw_Rate
+from findCG import GetMass
+# Choose Eigenmotion:
+tStart, tEnd, ti = phugoid()
+
+
+# Elevator input
+Ue = make_list(Deflection_of_elevator, tStart, tEnd)
+Ua = make_list(Deflection_of_aileron, tStart, tEnd)
+Ur = make_list(Deflection_of_rudder, tStart, tEnd)
+
+#validation input
+uValid = make_list(true_Airspeed, tStart, tEnd)
+height = make_list(Pressure_Altitude, tStart, tEnd)
+
+alphaValid = make_list(aoa, tStart, tEnd)
+rollValid = make_list(Roll_Angle, tStart, tEnd)
+pitchValid = make_list(Pitch_Angle, tStart, tEnd)
+pitchRateValid = make_list(Body_Pitch_Rate, tStart, tEnd)
+rollRateValid = make_list(Body_Roll_Rate, tStart, tEnd)
+yawRateValid = make_list(Body_Yaw_Rate, tStart, tEnd)
+
+hp0 =  height[1][0]
+V0 = uValid[1][0]
+alpha0 =  alphaValid[1][0]
+th0 = pitchValid[1][0]
+
+hp0    =       hp0       # pressure altitude in the stationary flight condition [m]
+V0     =       V0       # true airspeed in the stationary flight condition [m/sec]
+alpha0 =      alpha0       # angle of attack in the stationary flight condition [rad]
+th0    =      th0     # pitch angle in the stationary flight condition [rad]
+
+# Aircraft mass
+W     =     GetMass(tStart)      #weight in [N]
+m = W/9.81
+
+
+# aerodynamic properties
+e      =     0.7813870700721104       # Oswald factor [ ]
+CD0    =     0.02072961029837115       # Zero lift drag coefficient [ ]
+CLa    =     4.2878514154047185     # Slope of CL-alpha curve []
+>>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
 
 # Longitudinal stability
-Cma    =        -0.5     # longitudinal stabilty [ ]
-Cmde   =        0.05     # elevator effectiveness [ ]
+Cma    =        -0.7797024801826712    # longitudinal stabilty [ ]
+Cmde   =        -1.840864274760595    # elevator effectiveness [ ]
 
 # Aircraft geometry
 
@@ -52,9 +99,8 @@ Temp0  = 288.15          # temperature at sea level in ISA [K]
 R      = 287.05          # specific gas constant [m^2/sec^2K]
 g      = 9.81            # [m/sec^2] (gravity constant)
 
-# air density [kg/m^3]  
+# air density [kg/m^3]
 rho    = rho0 * np.power( ((1+(lmbda * hp0 / Temp0))), (-((g / (lmbda*R)) + 1)))   
-W      = m * g            # [N]       (aircraft weight)
 
 # Constant values concerning aircraft inertia
 
@@ -66,7 +112,6 @@ KXZ    = 0.002
 KY2    = 1.3925          # 1.25 * 1.114
 
 # Aerodynamic constants
-
 Cmac   = 0                      # Moment coefficient about the aerodynamic centre [ ]
 CNwa   = CLa                    # Wing normal force slope [ ]
 CNha   = 2 * np.pi * Ah / (Ah + 2) # Stabiliser normal force slope [ ]
@@ -116,3 +161,5 @@ Cnp    =  -0.0602
 Cnr    =  -0.2061
 Cnda   =  -0.0120
 Cndr   =  -0.0939
+
+

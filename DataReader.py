@@ -68,6 +68,19 @@ def get_Data1():
             temp = float(sheet.cell_value(i, 9))+273.15    #C --> K
             TAT.append(temp)
     return mppl, mfuel, time, hp, IAS, alpha, F_fl, F_fr, F_used, TAT
+
+#FIRST MEASUREMENT SET 
+    
+mppl = get_Data1()[0]
+mfuel = get_Data1()[1]
+time = get_Data1()[2]
+hp = get_Data1()[3]
+IAS = get_Data1()[4]
+alpha = get_Data1()[5]
+F_fl = get_Data1()[6]
+F_fr = get_Data1()[7]
+F_used = get_Data1()[8]
+TAT = get_Data1()[9]
             
 
 def get_Data2():
@@ -182,41 +195,66 @@ def get_Data2():
             temp = float(sheet.cell_value(i, 12))+273.15   #C-->K
             TAT_cg.append(temp)    
     
-    #EIGENMOTIONS ??
-    #
-    #
-    #
-    #
     
     return mppl, mpplist, pplname, mfuel, time, hp, IAS, alpha, delta_e, delta_tr, F_e, F_fl, F_fr, F_used, TAT, t_cg, hp_cg, IAS_cg, alpha_cg, delta_e_cg, delta_tr_cg, F_e_cg, F_fl_cg, F_fr_cg, F_used_cg, TAT_cg
  
 #COPY AND PASE THIS TO YOUR .PY TO HAVE ALL VARIABLES READY TO USE
-
-#mppl = get_Data2()[0]
-#mpplist = get_Data2()[1]   
-#pplname = get_Data2()[2]  
-#mfuel = get_Data2()[3]
-#time  = get_Data2()[4]
-#hp = get_Data2()[5]
-#IAS = get_Data2()[6]
-#alpha = get_Data2()[7]
-#delta_e = get_Data2()[8]
-#delta_tr  = get_Data2()[9]
-#F_e = get_Data2()[10]
-#F_fl = get_Data2()[11]
-#F_fr = get_Data2()[12]
-#F_used = get_Data2()[13]
-#TAT = get_Data2()[14]
-#t_cg = get_Data2()[15]
-#hp_cg = get_Data2()[16]
-#IAS_cg = get_Data2()[17]
-#alpha_cg = get_Data2()[18]
-#delta_e_cg = get_Data2()[19]
-#delta_tr_cg = get_Data2()[10]
-#F_e_cg = get_Data2()[21]
-#F_fl_cg = get_Data2()[22]
-#F_fr_cg = get_Data2()[23]
-#F_used_cg = get_Data2()[24]
-#TAT_cg = get_Data2()[25]
-#
+#SECOND MEASUREMENT SET 
+mppl= get_Data2()[0]
+mpplist = get_Data2()[1]
+pplname = get_Data2()[2]
+mfuel  = get_Data2()[3]
+time = get_Data2()[4]
+hp = get_Data2()[5]
+IAS = get_Data2()[6]
+alpha = get_Data2()[7]
+delta_e = get_Data2()[8]
+delta_tr = get_Data2()[9]
+F_e = get_Data2()[10]
+F_fl = get_Data2()[11]
+F_fr = get_Data2()[12]
+F_used = get_Data2()[13]
+TAT = get_Data2()[14]
+t_cg = get_Data2()[15]
+hp_cg = get_Data2()[16]
+IAS_cg = get_Data2()[17]
+alpha_cg = get_Data2()[18]
+delta_e_cg = get_Data2()[19]
+delta_tr_cg = get_Data2()[20]
+F_e_cg = get_Data2()[21]
+F_fl_cg = get_Data2()[22]
+F_fr_cg = get_Data2()[23]
+F_used_cg = get_Data2()[24]
+TAT_cg = get_Data2()[25]
 #print alpha 
+
+def get_eigentimes():
+    #EIGENMOTIONS 
+    
+    a = sheet.cell_value(82, 3).replace(':',' ')
+    phugoid = float(a[0:2])*60 + float(a[3:5])
+            
+    a = sheet.cell_value(83, 3).replace(':',' ')
+    short_period = float(a[0:2])*60 + float(a[3:5])
+    #
+    a = sheet.cell_value(82, 6).replace(':',' ')
+    dutch_roll = float(a[0:2])*60 + float(a[3:5])
+    
+    a = sheet.cell_value(83, 6).replace(':',' ')
+    dutch_roll_yd = float(a[0:2])*60 + float(a[3:5])
+    
+    a = sheet.cell_value(82, 9).replace(':',' ')
+    aper_roll = float(a[0:2])*60 + float(a[3:5])
+    
+    a = sheet.cell_value(83, 9).replace(':',' ')
+    spiral = float(a[0:2])*60 + float(a[3:5])
+    return phugoid, short_period, dutch_roll, dutch_roll_yd, aper_roll, spiral
+
+#EGIVENMOTIONS STARTIME 
+phugoid = get_eigentimes()[0]
+short_period = get_eigentimes()[1]
+dutch_roll = get_eigentimes()[2]
+dutch_roll_yd = get_eigentimes()[3]
+aper_roll = get_eigentimes()[4]
+spiral = get_eigentimes()[5]
+
