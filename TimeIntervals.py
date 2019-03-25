@@ -41,29 +41,30 @@ def dutch_roll_yd():
     return t_dryd_utc, tend_dryd_utc, i_t_dryd
 
 def aper_roll():
-    aper_roll = get_eigentimes()[4]+7   
-    t_apr_utc = seconds_to_utc(aper_roll)-5
+    #aper_roll = get_eigentimes()[4]+7   
+    t_apr_utc = 40278. #seconds_to_utc(aper_roll)-5
     i_t_apr = find_index(t_apr_utc)
-    tend_apr_utc = t_apr_utc+20
+    tend_apr_utc = t_apr_utc+30
     return t_apr_utc, tend_apr_utc, i_t_apr
 
 def spiral():
-    spiral = get_eigentimes()[5]
-    t_spir_utc  = seconds_to_utc(spiral)
+    #spiral = get_eigentimes()[5]-5
+    t_spir_utc  = 40795.5 #seconds_to_utc(spiral) 
     i_t_spir = find_index(t_spir_utc)
-    tend_spir_utc = 41031
+    tend_spir_utc =  t_spir_utc + 60
     return t_spir_utc, tend_spir_utc, i_t_spir
 
 plt.figure()
 plt.plot(UTC_Seconds, Deflection_of_aileron, label= "Deflection of Aileron")
-plt.plot(UTC_Seconds, Deflection_of_rudder, label = "Deflection of Rudder")
+#plt.plot(UTC_Seconds, Deflection_of_rudder, label = "Deflection of Rudder")
 plt.plot(spiral()[0], Deflection_of_aileron[spiral()[-1]], 'o')
-plt.plot(spiral()[0], Deflection_of_rudder[spiral()[-1]], 'o')
+#plt.plot(spiral()[0], Deflection_of_rudder[spiral()[-1]], 'o')
 
 plt.legend()
 plt.figure()
-plt.plot(UTC_Seconds, Body_Roll_Rate, label= "Roll Rate" )
-plt.plot(spiral()[0], Body_Roll_Rate[spiral()[-1]], 'o')
+plt.plot(UTC_Seconds, Roll_Angle, label= "Roll Angle" )
+plt.plot(spiral()[0], Roll_Angle[spiral()[-1]], 'o')
+
 plt.legend()
 plt.show()
 
