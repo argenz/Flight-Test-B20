@@ -118,6 +118,8 @@ true_Airspeed = [fd[42][i][0]*0.514444444 for i in range(len(fd[41]))]    #kts -
 #Active Screen = []
 #T = []
 
+
+''''
 <<<<<<< HEAD
 #plt.figure()
 #plt.plot(time, Altitude_Rate)
@@ -126,3 +128,4 @@ true_Airspeed = [fd[42][i][0]*0.514444444 for i in range(len(fd[41]))]    #kts -
 
     
 >>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
+'''
