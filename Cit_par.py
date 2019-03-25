@@ -1,28 +1,8 @@
 # Citation 550 - Linear simulation
 
 # Stationary flight condition
-<<<<<<< HEAD
-import numpy as np
-#from AerodynamicCoeff import *
-#from DataReader import *
-=======
->>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
 
 
-<<<<<<< HEAD
-# Aircraft mass
-#mppl = get_Data1()[0]                    #mass of people
-oew = 3504                               #kg 
-#mfuel = get_Data1()[1]  
-
-m =3566#kg
-
-
-# aerodynamic properties
-e      =     0.64           # Oswald factor [ ]
-CD0    =     0.11              # Zero lift drag coefficient [ ]
-CLa    =     4.6             # Slope of CL-alpha curve [ ]
-=======
 import numpy as np
 from TimeIntervals import short_period, phugoid, dutch_roll, aper_roll, spiral
 from data_processing import make_list
@@ -31,12 +11,28 @@ from readmat import Pitch_Angle, Roll_Angle
 from readmat import UTC_Seconds, aoa, true_Airspeed
 from readmat import Pressure_Altitude, Body_Pitch_Rate, Body_Roll_Rate, Body_Yaw_Rate
 from findCG import GetMass
-# Choose Eigenmotion:
-tStart, tEnd, ti = phugoid()
+#from Main import motion
+#from Main import 
 
+# Choose Eigenmotion:
+print "1.", "Short Period"
+print "2.", "Phugoid"
+print "3.", "Dutch Roll"
+print "4.", "Aperiodic Roll"
+print "5.", "Spiral"
+    
+running = True
+while running:   
+    motion = int(raw_input("Select motion to plot:"))
+    for i in np.arange(1,6,1):
+        if i == motion:
+            running = False
+
+mot = [short_period(), phugoid(), dutch_roll(), aper_roll(), spiral()]
+tStart, tEnd, ti = mot[motion-1]
 
 # Elevator input
-Ue = make_list(Deflection_of_elevator, tStart, tEnd)
+Ue = make_list(Deflection_of_elevator, tStart, tEnd)         #(time_values, y_values)
 Ua = make_list(Deflection_of_aileron, tStart, tEnd)
 Ur = make_list(Deflection_of_rudder, tStart, tEnd)
 
@@ -52,7 +48,7 @@ rollRateValid = make_list(Body_Roll_Rate, tStart, tEnd)
 yawRateValid = make_list(Body_Yaw_Rate, tStart, tEnd)
 
 hp0 =  height[1][0]
-V0 = uValid[1][0]
+V0 = uValid[1][0] 
 alpha0 =  alphaValid[1][0]
 th0 = pitchValid[1][0]
 
@@ -70,7 +66,6 @@ m = W/9.81
 e      =     0.7813870700721104       # Oswald factor [ ]
 CD0    =     0.02072961029837115       # Zero lift drag coefficient [ ]
 CLa    =     4.2878514154047185     # Slope of CL-alpha curve []
->>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
 
 # Longitudinal stability
 Cma    =        -0.7797024801826712    # longitudinal stabilty [ ]
@@ -162,4 +157,5 @@ Cnr    =  -0.2061
 Cnda   =  -0.0120
 Cndr   =  -0.0939
 
+#print CD0, e, Cma, Cmde, CLa  #correct
 
