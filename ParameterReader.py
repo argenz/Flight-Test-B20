@@ -8,6 +8,122 @@ Created on Mon Mar  4 14:46:02 2019
 from scipy import signal
 import numpy as np
 from Cit_par import *
+from DataReader import get_Data2, get_Data1
+from findCG import GetMass
+from readmat import UTC_Seconds
+
+def GetAirspeeds(IAS, TAT, h, t):
+    #INPUT: Indicated airspeed, Total Air Speed
+    #OUTPUT: Mach number, equivalent airspeed (EAS), true airspeed (TAS)
+    #description: Using material discussed in App. B, get EAS
+        # constants:
+    ymin1 = ISAmodule.gamma-1
+    gamma = ISAmodule.gamma
+    rho0 = ISAmodule.rho0
+    p0 = ISAmodule.p0    
+    
+    def GetMachNumber(IAS):
+
+        mps2knots = 1.94384449
+        knots2mps = 0.514444444
+        # IAS to CAS see App. A
+        CAS = (IAS*mps2knots - 2) *knots2mps # in m/s
+
+        # get pressure ratio
+        p0_p = 1/((1+ISAmodule.lmbda*h/ISAmodule.temp0)**(-ISAmodule.g/(ISAmodule.lmbda*ISAmodule.R)))
+        
+        # compute uncalibrated Mach number
+        M = np.sqrt(2/(ymin1)*((1+p0_p*((1+ymin1/(2*gamma)*rho0/p0*CAS**2)**(gamma/ymin1)-1))**(ymin1/gamma)-1))
+        
+        if M > 0.7:
+            raise ValueError("This is not realistic")
+            
+        ## calibrate Mach number see App. A
+        M = M - 0.07
+        
+        return M
+    
+    # get calibrated Mach number
+    M = GetMachNumber(IAS)
+    
+    # get static temperature from TAT
+    T = TAT/(1+ymin1/2*M**2)
+
+    # get density ratio (ISA model)
+    rho_rho0 = ISAmodule.ISA_rho(h)[0]/ISAmodule.rho0
+    
+    # get speed of sound
+    a = np.sqrt(gamma * ISAmodule.R * T)
+
+    # true airspeed
+    TAS = M * a
+    
+    # equivalent airspeed
+    EAS = TAS * np.sqrt(rho_rho0)
+    
+    W = GetMass(UTC_Seconds[0]+t)
+    Ws = 60500.
+    
+    RAS = EAS*np.sqrt(Ws/W)
+    
+    
+    return M, TAS, EAS, RAS
+
+def GetAirspeedsExcel(IAS, TAT, h, W):
+    #INPUT: Indicated airspeed, Total Air Speed
+    #OUTPUT: Mach number, equivalent airspeed (EAS), true airspeed (TAS)
+    #description: Using material discussed in App. B, get EAS
+        # constants:
+    ymin1 = ISAmodule.gamma-1
+    gamma = ISAmodule.gamma
+    rho0 = ISAmodule.rho0
+    p0 = ISAmodule.p0    
+    
+    def GetMachNumber(IAS):
+
+        mps2knots = 1.94384449
+        knots2mps = 0.514444444
+        # IAS to CAS see App. A
+        CAS = (IAS*mps2knots - 2) *knots2mps # in m/s
+
+        # get pressure ratio
+        p0_p = 1/((1+ISAmodule.lmbda*h/ISAmodule.temp0)**(-ISAmodule.g/(ISAmodule.lmbda*ISAmodule.R)))
+        
+        # compute uncalibrated Mach number
+        M = np.sqrt(2/(ymin1)*((1+p0_p*((1+ymin1/(2*gamma)*rho0/p0*CAS**2)**(gamma/ymin1)-1))**(ymin1/gamma)-1))
+        
+        if M > 0.7:
+            raise ValueError("This is not realistic")
+            
+        ## calibrate Mach number see App. A
+        M = M - 0.07
+        
+        return M
+    
+    # get calibrated Mach number
+    M = GetMachNumber(IAS)
+    
+    # get static temperature from TAT
+    T = TAT/(1+ymin1/2*M**2)
+
+    # get density ratio (ISA model)
+    rho_rho0 = ISAmodule.ISA_rho(h)[0]/ISAmodule.rho0
+    
+    # get speed of sound
+    a = np.sqrt(gamma * ISAmodule.R * T)
+
+    # true airspeed
+    TAS = M * a
+    
+    # equivalent airspeed
+    EAS = TAS * np.sqrt(rho_rho0)
+    
+    Ws = 60500.
+    
+    RAS = EAS*np.sqrt(Ws/W)
+    
+    
+    return M, TAS, EAS, RAS
 
 def OpenThrustFile(file):
 #   Description: needed function to convert the .txt/.DAT file into useable format
@@ -37,12 +153,14 @@ class ISAProperties(object):
     # Properties:
     # - values at h = 0
     # func returning values: rho, T @ given h
-    def __init__(self, rho0, lmbda, temp0, R, G):
+    def __init__(self, rho0, p0, lmbda, temp0, R, G):
         self.rho0 = rho0
         self.lmbda = lmbda
         self.temp0 = temp0
+        self.p0 = p0
         self.R = R
         self.g = G
+        self.gamma = 1.4
     def ISA_rho(self, h):
 
     
@@ -204,8 +322,8 @@ cessna.Geometry = (cessnaGeometry)
 cessna.Inertia = (cessnaInertia)
 cessna.StabDeriv = (cessnaStabDeriv)
 
-
-ISAmodule = ISAProperties(rho0, lmbda, Temp0, R, g)
+Pa = 101325.
+ISAmodule = ISAProperties(rho0, Pa, lmbda, Temp0, R, g)
 
 
 

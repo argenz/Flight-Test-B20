@@ -29,6 +29,7 @@ def GetParametersSim(lsimout):
     Y4 = state_vector[:,3]
     
     return Y1, Y2, Y3, Y4
+
 def SimulateSymmResponse(sys, DefElevator, ValidVelocity, ValidAoA, ValidPitchAngle
                      , ValidPitchRate):
     #INPUT: SS model and given parameters of type list
@@ -44,6 +45,7 @@ def SimulateSymmResponse(sys, DefElevator, ValidVelocity, ValidAoA, ValidPitchAn
     U0 = [[uValid[1][0]],[alphaValid[1][0]],
           [pitchValid[1][0]], [pitchRateValid[1][0]]]
     zero = np.zeros([4,1])
+    
     y = control.lsim(sys, DefElevator, T, U0)
         
     if np.size(sys.B) == 4:
@@ -105,7 +107,8 @@ def SimulateAsymmResponse(sys, DefAileron, DefRudder, ValidRollAngle
     DefRudder = np.array(DefRudder[1][:])
     DefRudder = DefRudder - DefRudder0
     
-    U = np.stack((Ua[1],Ur[1]), axis = -1)
+    U = np.array([Ua[1], Ur[1]])
+    U = np.transpose(U)
     zero = np.zeros([4,1])
     y = control.lsim(sys, U, T, zero)
         
@@ -147,8 +150,8 @@ def SimulateAsymmResponse(sys, DefAileron, DefRudder, ValidRollAngle
     print ("done")
     return True
 
-sys_symm, sys_asymm = InitSS()
-SimulateSymmResponse(sys_symm, Ue, uValid, alphaValid, pitchValid, pitchRateValid)
-SimulateAsymmResponse(sys_asymm, Ua, Ur, rollValid, rollRateValid, yawRateValid)
+#sys_symm, sys_asymm = InitSS()
+#SimulateSymmResponse(sys_symm, Ue, uValid, alphaValid, pitchValid, pitchRateValid)
+#SimulateAsymmResponse(sys_asymm, Ua, Ur, rollValid, rollRateValid, yawRateValid)
 
 

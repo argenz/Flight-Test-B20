@@ -62,7 +62,7 @@ def get_Data1():
             ffr = float(sheet.cell_value(i, 7))*0.000125998  #lbs/hr --> kg/s
             F_fr.append(ffr)
             #
-            f_used = float(sheet.cell_value(i, 8))*0.000125998  #lbs/hr --> kg/s
+            f_used = float(sheet.cell_value(i, 8))*0.453592  #lbs --> kg
             F_used.append(f_used)
             #
             temp = float(sheet.cell_value(i, 9))+273.15    #C --> K
@@ -138,7 +138,7 @@ def get_Data2():
             ffr = float(sheet.cell_value(i, 10))*0.000125998  #lbs/hr --> kg/s
             F_fr.append(ffr)
             #
-            f_used = float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
+            f_used = float(sheet.cell_value(i, 11))*0.453592  #lbs --> kg
             F_used.append(f_used)
             #
             temp = float(sheet.cell_value(i, 12))+273.15   #C-->K
@@ -189,7 +189,7 @@ def get_Data2():
             ffr= float(sheet.cell_value(i, 10))*0.000125998  #lbs/hr --> kg/s
             F_fr_cg.append(ffr)
             #
-            f_used= float(sheet.cell_value(i, 11))*0.000125998  #lbs/hr --> kg/s
+            f_used= float(sheet.cell_value(i, 11))*0.453592  #lbs --> kg
             F_used_cg.append(f_used)
             #
             temp = float(sheet.cell_value(i, 12))+273.15   #C-->K
