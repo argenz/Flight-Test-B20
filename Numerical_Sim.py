@@ -8,24 +8,6 @@ from ParameterReader import cessna
 import numpy as np
 import scipy.linalg as slin
 import matplotlib.pyplot as plt
-<<<<<<< HEAD
-
-#rewrite linear system into SS: x_bar_dot = AX + Bu
-#def SSmaker(a, b, c):
-#    
-#    A = np.dot(slin.inv(a),-b)
-#    B = np.dot(slin.inv(a),-c)  
-#    C = np.array([[1, 0, 0, 0],
-#             [0, 1, 0, 0],
-#             [0, 0, 1, 0],
-#             [0, 0, 0, 1]])
-#    D = np.zeros(np.shape(c))
-#    print(np.linalg.eig(A))
-#    
-#    return control.ss(A,B,C,D)
-
-## SYMMETRIC MOTION
-=======
 import control.matlab as control
 from Cit_par import *
 
@@ -77,7 +59,6 @@ def InitSS():
              [0, 0, 0, 1]])
     
     def SSmaker(a, b, c):
->>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
     
         A = np.dot(slin.inv(a),b)
         B = np.dot(slin.inv(a),c)
@@ -95,43 +76,4 @@ def InitSS():
     
     return sys_symm, sys_asymm
     
-## State-Space Models:
-<<<<<<< HEAD
-#    
-#sys_symm = SSmaker(C1s,C2s,C3s)
-#print sys_symm
-
-# symmetric
-
-def SSmaker2(a, b, c):  
-    A = np.dot(slin.inv(a),-b)
-    B = np.dot(slin.inv(a),-c)
-    return A,B
-
-def reaction_sym(v, alpha, theta, q, uvector, step_size, simtime):
-    x = [[u],[alpha],[theta],[q]]
-    x_list = []    
-    t = 0
-    A = SSmaker2(C1s, C2s, C3s)[0]
-    B = SSmaker2(C1s, C2s, C3s)[1]
-    
-    for i in range(0, simtime/stepsize):
-        u = u_vector[i]
-        xdot = np.dot(A,x) + np.dot(B,u)
-        x += xdot*stepsize
-        x_list.append(x)
-        t = t + stepsize
-        x_list.append(x)
-
-=======
-    
-#sys_symm = SSmaker(C1s, -C2s, -C3s)
-#print sys_symm
-#sys_asymm = SSmaker(-C1a, C2a, C3a)
->>>>>>> ee55e8a05513f23b34922a4e490a8598ea04d8b7
-
-#y,t = control.step(sys_symm)
-##
-#plt.plot(t,y)
-#
-
+InitSS()
