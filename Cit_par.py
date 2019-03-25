@@ -4,7 +4,7 @@
 
 
 import numpy as np
-from TimeIntervals import short_period, phugoid, dutch_roll, aper_roll, spiral
+from TimeIntervals import short_period, phugoid, dutch_roll, dutch_roll_yd, aper_roll, spiral
 from data_processing import make_list
 from readmat import Deflection_of_aileron, Deflection_of_elevator, Deflection_of_rudder, Deflection_elev_trim
 from readmat import Pitch_Angle, Roll_Angle
@@ -18,18 +18,20 @@ from findCG import GetMass
 print "1.", "Short Period"
 print "2.", "Phugoid"
 print "3.", "Dutch Roll"
-print "4.", "Aperiodic Roll"
-print "5.", "Spiral"
+print "4.", "Dutch Roll with Yaw Damper"
+print "5.", "Aperiodic Roll"
+print "6.", "Spiral"
     
 running = True
 while running:   
-    motion = int(raw_input("Select motion to plot:"))
-    for i in np.arange(1,6,1):
+    motion = int(raw_input("Select number of motion to plot:"))
+    for i in np.arange(1,7,1):
         if i == motion:
             running = False
 
-mot = [short_period(), phugoid(), dutch_roll(), aper_roll(), spiral()]
+mot = [short_period(), phugoid(), dutch_roll(), dutch_roll_yd(), aper_roll(), spiral()]
 tStart, tEnd, ti = mot[motion-1]
+
 
 # Elevator input
 Ue = make_list(Deflection_of_elevator, tStart, tEnd)         #(time_values, y_values)
