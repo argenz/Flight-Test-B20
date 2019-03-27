@@ -15,23 +15,22 @@ from findCG import GetMass
 #from Main import 
 
 # Choose Eigenmotion:
-print "1.", "Short Period"
-print "2.", "Phugoid"
-print "3.", "Dutch Roll"
-print "4.", "Dutch Roll with Yaw Damper"
-print "5.", "Aperiodic Roll"
-print "6.", "Spiral"
-    
-running = True
-while running:   
-    motion = int(raw_input("Select number of motion to plot:"))
-    for i in np.arange(1,7,1):
-        if i == motion:
-            running = False
-
-mot = [short_period(), phugoid(), dutch_roll(), dutch_roll_yd(), aper_roll(), spiral()]
-tStart, tEnd, ti = mot[motion-1]
-
+#print "1.", "Short Period"
+#print "2.", "Phugoid"
+#print "3.", "Dutch Roll"
+#print "4.", "Dutch Roll with Yaw Damper"
+#print "5.", "Aperiodic Roll"
+#print "6.", "Spiral"
+#    
+#running = True
+#while running:   
+#    motion = int(raw_input("Select number of motion to plot:"))
+#    for i in np.arange(1,7,1):
+#        if i == motion:
+#            running = False
+#
+#mot = [short_period(), phugoid(), dutch_roll(), dutch_roll_yd(), aper_roll(), spiral()]
+tStart, tEnd, ti = short_period()
 
 # Elevator input
 Ue = make_list(Deflection_of_elevator, tStart, tEnd)         #(time_values, y_values)
@@ -62,16 +61,15 @@ th0    =      th0     # pitch angle in the stationary flight condition [rad]
 # Aircraft mass
 W     =     GetMass(tStart)      #weight in [N]
 m = W/9.81
-
-
+#print m
 # aerodynamic properties
-e      =     0.7813870700721104       # Oswald factor [ ]
-CD0    =     0.02072961029837115       # Zero lift drag coefficient [ ]
-CLa    =     4.2878514154047185     # Slope of CL-alpha curve []
+e      =     0.9702770390615243       # Oswald factor [ ]
+CD0    =     0.021102518946169862       # Zero lift drag coefficient [ ]
+CLa    =     5.265521398365575     # Slope of CL-alpha curve []
 
 # Longitudinal stability
-Cma    =        -0.7797024801826712    # longitudinal stabilty [ ]
-Cmde   =        -1.840864274760595    # elevator effectiveness [ ]
+Cma    =        -0.5376411647209149    # longitudinal stabilty [ ]
+Cmde   =        -1.2693616320721883    # elevator effectiveness [ ]
 
 # Aircraft geometry
 
@@ -98,7 +96,8 @@ g      = 9.81            # [m/sec^2] (gravity constant)
 
 # air density [kg/m^3]
 rho    = rho0 * np.power( ((1+(lmbda * hp0 / Temp0))), (-((g / (lmbda*R)) + 1)))   
-
+W      = m * g            # [N]       (aircraft weight)
+#print rho
 # Constant values concerning aircraft inertia
 
 muc    = m / (rho * S * c)
@@ -130,7 +129,7 @@ CXde   = -0.03728
 
 CZ0    = -W * np.cos(th0) / (0.5 * rho * V0 ** 2 * S)
 CZu    = -0.37616
-CZa    = -5.74340
+CZa    = -6.74340
 CZadot = -0.00350
 CZq    = -5.66290
 CZde   = -0.69612
@@ -159,5 +158,4 @@ Cnr    =  -0.2061
 Cnda   =  -0.0120
 Cndr   =  -0.0939
 
-#print CD0, e, Cma, Cmde, CLa  #correct
 

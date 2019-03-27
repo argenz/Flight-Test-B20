@@ -36,14 +36,14 @@ def SimulateSymmResponse(sys, DefElevator, ValidVelocity, ValidAoA, ValidPitchAn
     
     # make time vector
     T = np.linspace(DefElevator[0][0], DefElevator[0][-1],len(DefElevator[0]))
-#    print (T[2]-T[1])
+
     # make INPUT vector
     DefElevator0 = DefElevator[1][0]
     DefElevator = np.array(DefElevator[1][:])
     DefElevator = DefElevator - DefElevator0
-#    U0 = [[uValid[1][0]],[alphaValid[1][0]],
-#          [pitchValid[1][0]], [pitchRateValid[1][0]]]
+    DefElevator = [i * 1 for i in DefElevator]
     zero = np.zeros([4,1])
+    
     y = control.lsim(sys, DefElevator, T, zero)
         
     if np.size(sys.B) == 4:
@@ -51,38 +51,56 @@ def SimulateSymmResponse(sys, DefElevator, ValidVelocity, ValidAoA, ValidPitchAn
         AoA = AoA + ValidAoA[1][0]
         PitchAngle = PitchAngle + ValidPitchAngle[1][0]
         # redimension parameters:
-        uNum = uCurl #+ ValidVelocity[1][0]
+        uNum = uCurl + ValidVelocity[1][0]
         PitchRate = PitchRate_curl + pitchRateValid[1][0]       
     
     ## subtract 1st element from all lists
     
-    #validation lists
+
+    DefElevator = [i * 1 for i in DefElevator]
+    DefElevator = DefElevator + DefElevator0
+    
+    #plotting
+    legendloc = 2
+    validstyle = '--'
     plt.figure(1)
+    plt.rcParams.update({'font.size': 15})
+
     plt.subplot(511)
-    plt.plot(T, uNum, label = "Numerical: velocity")
-    plt.plot(ValidVelocity[0], ValidVelocity[1], label = "Validation velocity")
-    plt.legend()
+    plt.title("Phugoid")
+    plt.plot(T, uNum, label = "Numerical")
+    plt.plot(ValidVelocity[0], ValidVelocity[1], label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel('u [m/s]')        
+    plt.legend(loc = legendloc)
+
+#    plt.ylabel("$V [m/s]$")
     
     plt.subplot(512)
-    plt.plot(T, AoA, label = "Numerical: AoA")
-    plt.plot(ValidAoA[0], ValidAoA[1], label = "Validation: AoA")
-    plt.legend()
+    plt.plot(T, AoA, label = "Numerical")
+    plt.plot(ValidAoA[0], ValidAoA[1], label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel(r'$\alpha$ [rad]')        
+    plt.legend(loc = legendloc)
     
     plt.subplot(513)
-    plt.plot(T, (PitchAngle), label = "Numerical: pitch angle")
-    plt.plot(ValidPitchAngle[0], (ValidPitchAngle[1]), label = "Validation: pitch angle")
-    plt.legend()
+    plt.plot(T, (PitchAngle), label = "Numerical")
+    plt.plot(ValidPitchAngle[0], (ValidPitchAngle[1]), label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel(r'$\theta$ [rad/s]')
+    plt.legend(loc = legendloc)
+
     
     plt.subplot(514)
-    plt.plot(T, -PitchRate, label = "Numerical: pitch rate")
-    plt.plot(ValidPitchRate[0], ValidPitchRate[1], label = "Validation: pitch rate")
-#    plt.plot(time, pitch_rate, label = "dimensionless pitch rate")
-    plt.legend()
+    plt.plot(T, PitchRate, label = "Numerical")
+    plt.plot(ValidPitchRate[0], ValidPitchRate[1], label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel('q [rad/s]')        
+    plt.legend(loc = legendloc)
+
     
     plt.subplot(515)
     plt.plot(T, DefElevator, label = "Input Elevator")
-    plt.legend()
-    
+    plt.gca().set_ylabel(r'$\delta_{e}$ [rad]')
+    plt.gca().set_xlabel('time [s]')
+    plt.legend(loc = legendloc)
+
     plt.show()
     
     print("done")
@@ -96,16 +114,18 @@ def SimulateAsymmResponse(sys, DefAileron, DefRudder, ValidRollAngle
     # make time vector
     T = np.linspace(DefAileron[0][0], DefAileron[0][-1],len(DefAileron[0]))
 
+    
     # make INPUT vector
     DefAileron0 = DefAileron[1][0]
-    DefAileron = np.array(DefAileron[1][:])
-    DefAileron = DefAileron - DefAileron0
-    
     DefRudder0 = DefRudder[1][0]
-    DefRudder = np.array(DefRudder[1][:])
-    DefRudder = DefRudder - DefRudder0
     
-    U = np.stack((Ua[1],Ur[1]), axis = -1)
+    DefAileron = DefAileron[1][:] - DefAileron[1][0]
+#    DefAileron = [-1*i for i in DefAileron]
+
+    DefRudder = DefRudder[1][:] - DefRudder[1][0]
+#    DefRudder = [-1*i for i in DefRudder]
+    
+    U = np.stack((DefAileron,DefRudder), axis = -1)
     zero = np.zeros([4,1])
     y = control.lsim(sys, U, T, zero)
         
@@ -115,40 +135,51 @@ def SimulateAsymmResponse(sys, DefAileron, DefRudder, ValidRollAngle
     p = p + ValidRollRate[1][0]
     r = r + ValidYawRate[1][0]
     
-    
+    DefRudder = DefRudder + DefRudder0
+    DefAileron = DefAileron + DefAileron0
     # plotting
+    legendloc = 3
     plt.figure(2)
+    validstyle = '--'
+    plt.rcParams.update({'font.size': 15}) 
+    
     plt.subplot(411)
-    plt.plot(T, phi, label = "Numerical: Roll Angle")
-    plt.plot(ValidRollAngle[0], ValidRollAngle[1], label = "Validation: Roll Angle")
+    plt.title("Spiral")
+    plt.plot(T, phi, label = "Numerical")
+    plt.plot(ValidRollAngle[0], ValidRollAngle[1], label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel(r'$\phi$ [rad]')        
+    plt.legend(loc = legendloc)
     plt.legend()
     
     plt.subplot(412)
-    plt.plot(T, p, label = "Numerical: Roll Rate")
-    plt.plot(ValidRollRate[0], ValidRollRate[1], label = "Validation: Roll Rate")
+    plt.plot(T, p, label = "Numerical")
+    plt.plot(ValidRollRate[0], ValidRollRate[1], label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel('p [rad/s]')      
+    plt.legend(loc = legendloc)
     plt.legend()
     
     plt.subplot(413)
-    plt.plot(T, r, label = "Numerical: Yaw Rate")
-    plt.plot(ValidYawRate[0], (ValidYawRate[1]), label = "Validation: Yaw Rate")
+    plt.plot(T, r, label = "Numerical")
+    plt.plot(ValidYawRate[0], (ValidYawRate[1]), label = "Flight Data", linestyle = validstyle)
+    plt.gca().set_ylabel('r [rad/s]')        
+    plt.legend(loc = legendloc)
     plt.legend()
     
     plt.subplot(414)    
-    plt.plot(T, DefAileron, label = "Input Aileron")
-    plt.plot(T, DefRudder, label = "Input Rudder")
+    plt.plot(T, DefAileron, label = r"Input Aileron $\delta_{a}$")
+    plt.plot(T, DefRudder, label = r"Input Rudder $\delta_{r}$", linestyle = validstyle)
+    plt.gca().set_ylabel(r'$\delta$ [rad]')    
+    plt.gca().set_xlabel('time [s]')    
+    plt.legend(loc = legendloc)
     plt.legend()
     
     plt.show()   
-        
-    
-    ## subtract 1st element from all lists
-    
-    #validation lists    
+           
     print ("done")
     return True
-
+#
 sys_symm, sys_asymm = InitSS()
 SimulateSymmResponse(sys_symm, Ue, uValid, alphaValid, pitchValid, pitchRateValid)
-SimulateAsymmResponse(sys_asymm, Ua, Ur, rollValid, rollRateValid, yawRateValid)
+#SimulateAsymmResponse(sys_asymm, Ua, Ur, rollValid, rollRateValid, yawRateValid)
 
 
